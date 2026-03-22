@@ -1,7 +1,7 @@
 import {ProductCard} from './App.jsx';
 
 
-export const Menu = ({sandwiches, addToTotal, removeFromTotal}) => {
+export const Menu = ({sandwiches, addToTotal, removeFromTotal, clearProduct}) => {
     return(<>
         {sandwiches.map( (sandwich) => (
          
@@ -14,6 +14,7 @@ export const Menu = ({sandwiches, addToTotal, removeFromTotal}) => {
           image={sandwich.image}
           code={sandwich.code} 
           id={sandwich.id} 
+          clearProduct={clearProduct}
           />
           
           ))}

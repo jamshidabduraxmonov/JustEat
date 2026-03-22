@@ -8,7 +8,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import {Menu} from './Menu.jsx';
 
 
-export function ProductCard({ name, onAdd, price, onRemove, image, code, id }) {
+export function ProductCard({ name, onAdd, price, onRemove, image, code, id, clearProduct }) {
 
   const [ count, setCount ] = useState(0);
 
@@ -29,7 +29,14 @@ export function ProductCard({ name, onAdd, price, onRemove, image, code, id }) {
   }
 
   return(
-    <div className="product-card">
+    <div className="product-card" onClick={()=> {
+      if(count === 0) {
+        addUp();
+      }else if(count > 0){
+        clearProduct(id, price);
+        setCount(0);
+      }
+    }}>
       <img src={image} alt={name} />
       <div>{name}</div>
       <h3>{count}</h3>
@@ -194,7 +201,7 @@ useEffect( () => {
           <>
       
             <div className="product-grid">
-              <Menu sandwiches={sandwiches} addToTotal={addToTotal} removeFromTotal={removeFromTotal} />
+              <Menu sandwiches={sandwiches} addToTotal={addToTotal} removeFromTotal={removeFromTotal} clearProduct={clearProduct}/>
             </div>
 
             
