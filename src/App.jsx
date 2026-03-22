@@ -57,12 +57,12 @@ export function ProductCard({ name, onAdd, price, onRemove, image, code, id }) {
 
 export default function MainMenu() {
 
-  const [ total, setTotal ] = useState(0);
-  const [ itemCount, setItemCount] = useState(0);
+  const [ total, setTotal ] = useState(0); // Total price
+  const [ itemCount, setItemCount] = useState(0); // Total quantity of products
   
-  const [ sandwiches, setSandwiches ] = useState([]);
+  const [ sandwiches, setSandwiches ] = useState([]); // All the products in it
 
-  const [ cartContents, setCartContents ] = useState({});
+  const [ cartContents, setCartContents ] = useState({}); // All the chosen items to be bought
 
   const [ isPopupOpen, setIsPopupOpen ] = useState(false); 
 
@@ -92,7 +92,7 @@ export default function MainMenu() {
     setTotal(total + numericPrice);
     setItemCount(itemCount + 1);
     
-    // To get the quantity of this code
+    // To get the quantity of this codet
     const currentQty = cartContents[id] || 0;
 
     setCartContents({
@@ -153,6 +153,21 @@ export default function MainMenu() {
     }finally{
       setIsBusy(false);
     }
+}
+
+
+
+const clearProduct = (id, price) => {
+    const qty = cartContents[id];
+    setTotal(
+      total - (price * qty)
+    )
+
+    const newBag = {...cartContents};
+    delete newBag[id];
+
+    setCartContents(newBag);
+    setItemCount(itemCount - qty);
 }
 
 
