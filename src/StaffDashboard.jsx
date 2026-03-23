@@ -7,7 +7,7 @@ const StaffDashboard = () => {
     const [orders, setOrders] = useState([]); // No_1 state
     const [data, setData] = useState([]);
 
-    const [newProduct, setNewProduct] = useState({name: '', price: '', code: ''});
+    const [newProduct, setNewProduct] = useState({name: '', ingredients: '', price: '', code: ''});
 
     const [ imageFile, setImageFile ] = useState(null);
 
