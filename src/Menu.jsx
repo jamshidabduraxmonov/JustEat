@@ -7,6 +7,7 @@ export const Menu = ({sandwiches, addToTotal, removeFromTotal, clearProduct}) =>
          
           <ProductCard 
           name={sandwich.name} 
+          ingredients={sandwich.ingredients}
           price={sandwich.price} 
           key={sandwich.name} 
           onAdd={addToTotal} 

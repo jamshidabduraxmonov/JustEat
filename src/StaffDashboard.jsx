@@ -14,7 +14,7 @@ const StaffDashboard = () => {
     const [ isUploading, setIsUploading ] = useState(false);
 
     const [ editId, setEditId ] = useState(null);
-    const [ editProduct, setEditProduct ] = useState({name: '', price: '', code: ''});
+    const [ editProduct, setEditProduct ] = useState({name: '', ingredients: '', price: '', code: ''});
 
     // console.log('Total Orders: ', orders);
 
@@ -250,6 +250,7 @@ const StaffDashboard = () => {
                 <h2>Add New Product</h2>
 
                 <input name="name" value={newProduct.name} onChange={handleChange} className="name" type="text" placeholder='Product name' />
+                <input name="ingredients" value={newProduct.ingredients} onChange={handleChange} className="ingredients" type="text" placeholder='Ingredients list' />
                 <input name="price" value={newProduct.price} onChange={handleChange} className="price" type="number" placeholder='Price' />
                 <input name="code" value={newProduct.code} onChange={handleChange} className="code" type="text"  placeholder='Code'/>
 
@@ -274,6 +275,7 @@ const StaffDashboard = () => {
                 {
                     data.map(sandwich => {
                         const name = sandwich.name;
+                        const ingredients = sandwich.ingredients;
                         const code = sandwich.code;
                         const price = sandwich.price;
                         const image =  sandwich.image;
@@ -287,6 +289,7 @@ const StaffDashboard = () => {
                                     <>
                                         <input type="file" accept="image/*" onChange={handleFileChange} />
                                         <input name="name" onChange={handleEditChange} value={editProduct.name}/>
+                                        <input name="ingredients" onChange={handleEditChange} value={editProduct.ingredients}/>
                                         <input name="code" onChange={handleEditChange} value={editProduct.code}/>
                                         <input name="price" onChange={handleEditChange} value={editProduct.price}/>
 
@@ -297,6 +300,7 @@ const StaffDashboard = () => {
                                         <div>
                                             <img src={image} alt={name}/>
                                             <p key={name}>{name}</p>
+                                            <p key={ingredients}>Ingredients: {ingredients}</p>
                                             <p key={code}>{code}</p>
                                             <p>{price} AED</p>
                                         </div>

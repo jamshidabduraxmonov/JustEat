@@ -8,7 +8,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import {Menu} from './Menu.jsx';
 
 
-export function ProductCard({ name, onAdd, price, onRemove, image, code, id, clearProduct }) {
+export function ProductCard({ name, onAdd, price, onRemove, image, code, id, clearProduct, ingredients }) {
 
   const [ count, setCount ] = useState(0);
 
@@ -38,8 +38,9 @@ export function ProductCard({ name, onAdd, price, onRemove, image, code, id, cle
       }
     }}>
       <img src={image} alt={name} />
-      <div>{name}</div>
-      <p>{price} AED</p>
+      <h3 className="name">{name}</h3>
+      <p className='ingredients'>Ingredients: {ingredients}</p>
+      <p className="price">{price} AED</p>
       {count > 0 && (<div>
           <h3>{count}</h3>
 
