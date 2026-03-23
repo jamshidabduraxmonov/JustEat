@@ -13,7 +13,7 @@ export function ProductCard({ name, onAdd, price, onRemove, image, code, id, cle
   const [ count, setCount ] = useState(0);
 
 
-  function addUp(){
+  function addUp(e){
     setCount(count  + 1);
     onAdd(price, id);
     return count;
@@ -39,9 +39,15 @@ export function ProductCard({ name, onAdd, price, onRemove, image, code, id, cle
     }}>
       <img src={image} alt={name} />
       <div>{name}</div>
-      <h3>{count}</h3>
-      <button onClick={() => addUp()}>+</button>
-      <button onClick={() => takeDown()}>-</button>
+      <p>{price} AED</p>
+      {count > 0 && (<div>
+          <h3>{count}</h3>
+          <button onClick={() => addUp()}>+</button>
+          <button onClick={() => takeDown()}>-</button>
+      </div>)
+      
+      }
+      
     </div>
   )
 
