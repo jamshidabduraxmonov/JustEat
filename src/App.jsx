@@ -29,7 +29,7 @@ export function ProductCard({ name, onAdd, price, onRemove, image, code, id, cle
   }
 
   return(
-    <div className="product-card" onClick={()=> {
+    <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm hover:shadow-xl transition-all flex flex-col gap-4" onClick={()=> {
       if(count === 0) {
         addUp();
       }else if(count > 0){
@@ -37,10 +37,13 @@ export function ProductCard({ name, onAdd, price, onRemove, image, code, id, cle
         setCount(0);
       }
     }}>
-      <img src={image} alt={name} />
-      <h3 className="name">{name}</h3>
-      <p className='ingredients'>Ingredients: {ingredients}</p>
-      <p className="price">{price} AED</p>
+      <img className="w-full h-48 object-cover rounded-2xl bg-slate-100 " src={image} alt={name} />
+      <div className="flex justify-between items-start">
+        <h3 className="name">{name}</h3>
+        <span className="font-black">{price} AED</span>
+      </div>
+
+      <p className='text-sm text-slate-500 line-clamp-2'>Ingredients: {ingredients}</p>
       {count > 0 && (<div>
           <h3>{count}</h3>
 
@@ -216,7 +219,7 @@ useEffect( () => {
         <Route path='/' element={
           <>
       
-            <div className="product-grid">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
               <Menu sandwiches={sandwiches} addToTotal={addToTotal} removeFromTotal={removeFromTotal} clearProduct={clearProduct}/>
             </div>
 
