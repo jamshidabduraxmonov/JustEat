@@ -49,20 +49,29 @@ export function ProductCard({ name, onAdd, price, onRemove, image, code, id, cle
 
       <p className='text-sm text-slate-500 line-clamp-2'>Ingredients: {ingredients}</p>
       
-      {count > 0 && (<div>
-          <h3>{count}</h3>
+      {count > 0 && (
+        <div className="mt-auto bg-slate-50 flex items-center justify-between p-2 rounded-xl border border-slate-100 ">
 
-          <button onClick={(e) => {
+          <button className="w-10 h-10 bg-white border border-slate-200 rounded-lg shadow-sm active:scale-90"
+          
+          onClick={(e) => {
             e.stopPropagation();
             addUp();
             }}>+</button>
 
-          <button onClick={(e) =>{
+
+          <h3>{count}</h3>
+
+
+
+          <button className="w-10 h-10 bg-white border border-slate-200 rounded-lg shadow-sm active:scale-90"
+          
+          onClick={(e) =>{
             e.stopPropagation();
             takeDown();
           }}>-</button>
 
-      </div>)
+        </div>)
       
       }
 
