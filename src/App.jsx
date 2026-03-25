@@ -29,7 +29,11 @@ export function ProductCard({ name, onAdd, price, onRemove, image, code, id, cle
   }
 
   return(
-    <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm hover:shadow-xl transition-all flex flex-col gap-4" onClick={()=> {
+    <div className={`bg-white border rounded-3xl p-5 shadow-sm hover:shadow-xl transition-all flex flex-col gap-4
+      ${count > 0 ? 'ring-2 ring-emerald-500 scale-[1.02]' : 'border-slate-200'} 
+      `}
+    
+    onClick={()=> {
       if(count === 0) {
         addUp();
       }else if(count > 0){
@@ -44,6 +48,7 @@ export function ProductCard({ name, onAdd, price, onRemove, image, code, id, cle
       </div>
 
       <p className='text-sm text-slate-500 line-clamp-2'>Ingredients: {ingredients}</p>
+      
       {count > 0 && (<div>
           <h3>{count}</h3>
 
@@ -60,7 +65,7 @@ export function ProductCard({ name, onAdd, price, onRemove, image, code, id, cle
       </div>)
       
       }
-      
+
     </div>
   )
 
