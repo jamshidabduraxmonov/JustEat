@@ -228,24 +228,30 @@ useEffect( () => {
 
  return (
   <BrowserRouter>
-    <div className="app-container"> 
+    <div className="app-container pb-40"> 
       <Routes>
         <Route path='/' element={
           <>
       
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6 bg-slate-50 ">
               <Menu sandwiches={sandwiches} addToTotal={addToTotal} removeFromTotal={removeFromTotal} clearProduct={clearProduct}/>
             </div>
 
             
             {total > 0 && (
-              <div className="order-controls">
-                <button className="orderBtn" onClick={() => setIsPopupOpen(true)}>
-                  Order({itemCount}) - ${total}
-                </button>
-                <button className="clearBtn" onClick={() => window.location.reload()}>
-                  Clear All
-                </button>
+              <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t p-4 pb-8 z-50">
+                <div className="max-w-md mx-auto flex gap-3">
+                    <button className="flex-1 bg-emerald-500 text-white rounded-2xl py-4 px-6 flex justify-between items-center shadow-2xl shadow-emerald-400 active:scale-95 transition-all" 
+                      onClick={() => setIsPopupOpen(true)}>
+                     <span className='font-bold'>View Order({itemCount})</span> 
+                     <span className="font-black bg-emerald-600/50 px-3 py-1 rounded-lg">
+                      ${total}
+                     </span>
+                    </button>
+                    <button className="px-6 bg-slate-100 text-slate-500 font-semibold rounded-2xl py-4 hover:bg-slate-200 active:scale-95 transition-all " onClick={() => window.location.reload()}>
+                      Clear All
+                    </button>
+                </div>
               </div>
             )}
 
