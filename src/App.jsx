@@ -256,8 +256,13 @@ useEffect( () => {
             )}
 
             {isPopupOpen && (
-              <div className="popup">
-                <div className="popup-box">
+              <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-4">
+                
+                <div
+                  className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm"
+                />
+
+                <div className="relative w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl p-6">
                    {isConfirmed=== false ? (
             <>
               <button onClick={()=> setIsPopupOpen(false)}>x</button>
