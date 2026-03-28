@@ -255,56 +255,92 @@ useEffect( () => {
               </div>
             )}
 
-            {isPopupOpen && (
-              <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-4">
-                
-                <div
-                  className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm"
-                />
-
-                <div className="relative w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl p-6">
-                   {isConfirmed=== false ? (
-            <>
-              <button onClick={()=> setIsPopupOpen(false)}>x</button>
-              <h3>List of Products</h3>
-              {
-                codeKeys.map((key)=> {
-                  const spcProduct = sandwiches.find((item) => item.id === key);
-                  const name = spcProduct.name;
-                  const price = spcProduct.price;
-
-                  return(
-                    <p key={name}>{name}({cartContents[spcProduct.id]}) - ${price} - ${cartContents[spcProduct.id] * price}</p>
-                  )
-                })
-              }
-
-              <h3>Total: ${total}</h3>
-
-              <button onClick={() => { handleOrder() }} disabled={isBusy}>{isBusy ? "Sending..." : "Comfirm"}</button>
-            </>
-            
-          ) : ( 
-            <>
-              <button onClick={()=> {setIsPopupOpen(false); window.location.reload()}}>x</button>
-              <h3>Order Confirmed</h3>
-              <p>Show these codes to the cashier:</p>
-              {
-                codeKeys.map((codeKey)=> {
-                  const spcProduct = sandwiches.find(item => item.id === codeKey);
-                  const code = spcProduct.code;
-
-                  return(
-                    <p key={spcProduct.id}>{code}({cartContents[spcProduct.id]})</p>
-                  )
-                })
-              }
-            </>
           
-          )}
-                </div>
-              </div>
-            )}
+
+{isPopupOpen && (
+  <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-4">
+    
+    <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" />
+
+    <div className="relative w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl p-6">
+      {isConfirmed === false ? (
+        <>
+          
+          <button 
+            className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-xl p-2"
+            onClick={() => setIsPopupOpen(false)}
+          >
+            x
+          </button>
+
+        
+          <h3 className="text-2xl font-black text-slate-800 mb-1">Your Order</h3>
+          
+          
+          <p className="text-slate-500 text-sm mb-6">Review your items before confirming</p>
+          
+        
+          <div className="space-y-3 mb-8">
+            {codeKeys.map((key) => {
+              const spcProduct = sandwiches.find((item) => item.id === key);
+              const name = spcProduct.name;
+              const price = spcProduct.price;
+              const qty = cartContents[spcProduct.id];
+
+              return (
+                <p key={name} className="flex justify-between items-center text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                  <span className="font-medium">{name} ({qty})</span>
+                  <span className="font-bold text-emerald-600">${qty * price}</span>
+                </p>
+              )
+            })}
+          </div>
+
+          
+          <h3 className="text-xl font-black text-slate-900 border-t pt-4 mb-6 flex justify-between">
+            <span>Total:</span>
+            <span>${total}</span>
+          </h3>
+
+          
+          <button 
+            className="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-emerald-100 active:scale-95 transition-all disabled:opacity-50"
+            onClick={() => { handleOrder() }} 
+            disabled={isBusy}
+          >
+            {isBusy ? "Sending..." : "Confirm"}
+          </button>
+        </>
+      ) : ( 
+        <>
+          <button 
+            className="absolute top-4 right-4 text-slate-400 font-bold text-xl"
+            onClick={() => {setIsPopupOpen(false); window.location.reload()}}
+          >
+            x
+          </button>
+          
+          <h3 className="text-2xl font-black text-slate-800 mb-2">Order Confirmed</h3>
+          
+          <p className="text-slate-500 mb-6">Show these codes to the cashier:</p>
+          
+          <div className="bg-slate-900 text-emerald-400 p-6 rounded-2xl font-mono text-center space-y-2 mb-4">
+            {codeKeys.map((codeKey) => {
+              const spcProduct = sandwiches.find(item => item.id === codeKey);
+              const code = spcProduct.code;
+
+              return (
+                <p key={spcProduct.id} className="text-xl tracking-widest uppercase">
+                  {code} ({cartContents[spcProduct.id]})
+                </p>
+              )
+            })}
+          </div>
+        </>
+      )}
+    </div>
+  </div>
+)}
           </>
         }/>
 
