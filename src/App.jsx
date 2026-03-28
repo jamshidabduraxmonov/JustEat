@@ -232,7 +232,29 @@ useEffect( () => {
       <Routes>
         <Route path='/' element={
           <>
-      
+             <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b">
+                <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+                  <h1 className="text-xl font-black tracking-tighter text-emerald-600">Quick Order</h1>
+                  
+                  <div className="flex flew-wrap justify-center  gap-2">
+                      <button className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all">
+                        Sandwiches/Wraps
+                      </button>
+
+                      <button className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all">
+                        Muffins/Rolls
+                      </button>
+
+                      <button className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all">
+                        Starbucks
+                      </button>
+                  </div>
+
+                  
+
+                </div>
+             </nav>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6 bg-slate-50 ">
               <Menu sandwiches={sandwiches} addToTotal={addToTotal} removeFromTotal={removeFromTotal} clearProduct={clearProduct}/>
             </div>

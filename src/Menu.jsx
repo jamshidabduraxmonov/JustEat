@@ -3,7 +3,7 @@ import {ProductCard} from './App.jsx';
 
 export const Menu = ({sandwiches, addToTotal, removeFromTotal, clearProduct}) => {
     return(<>
-        <h1>Quick Order</h1>
+        
 
         {sandwiches.map( (sandwich) => (
          
