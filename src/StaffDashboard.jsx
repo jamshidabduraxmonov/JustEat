@@ -205,7 +205,7 @@ const StaffDashboard = () => {
 
 
     return (
-        <div>
+        <div className="">
             <h1>StaffDashboard</h1>
 
             
@@ -216,30 +216,33 @@ const StaffDashboard = () => {
                     const productIds = Object.keys(itemsMap);
 
                     return (
-                        <div key={order.id} className="order-card">
-                            <h2>Order #{order.id.slice(-3)}</h2>
+                        <div className="">
+                            <div key={order.id} className=" grid grid-cols-1 border max-w-md mx-6 my-2 rounded-md bg-slate-100">
+                            <h2 className="bg-slate-50  text-emerald-700 font-black" >Order #{order.id.slice(-3)}</h2>
                             {
                                 productIds.map(productId => {
                                     const foundProduct = data.find(product => product.id == productId);
                                     const quantity = itemsMap[productId]
 
                                     if (!foundProduct) {
-                                        return <p key={productId}>[Deleted Item] x {quantity}</p>
+                                        return <p key={productId} className="italic text-slate-400">[Deleted Item] x {quantity}</p>
                                     }
 
                                     return(
-                                        <p key={productId}>{foundProduct.name} x {quantity}</p>
+                                        <p key={productId} className="flex gap-2 text-slate-700 font-black">{foundProduct.name} x <span className="bg-emerald-100 text-emerald-700 ">{quantity}</span></p>
                                     )
                                 })
 
                                 
                             }
 
-                            <footer>{order.createdAt?.toDate().toLocaleTimeString([], {
+                            <footer className="text-sm text-gray-500">{order.createdAt?.toDate().toLocaleTimeString([], {
                                 hour: '2-digit',
                                 minute: '2-digit'
                             }) || 'Loading...' }</footer>
                         </div>
+                        </div>
+                        
                     )
                 })
              
