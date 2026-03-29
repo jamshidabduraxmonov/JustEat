@@ -249,25 +249,29 @@ const StaffDashboard = () => {
             }
 
 
-            <div className="create-new">
-                <h2>Add New Product</h2>
+            <div className=" flex justify-center">
+                <div className="grid border py-4 px-6 gap-2 rounded">
+                    <h2 className="font-black">Add New Product</h2>
+                    
 
-                <input name="name" value={newProduct.name} onChange={handleChange} className="name" type="text" placeholder='Product name' />
-                <input name="ingredients" value={newProduct.ingredients} onChange={handleChange} className="ingredients" type="text" placeholder='Ingredients list' />
-                <input name="price" value={newProduct.price} onChange={handleChange} className="price" type="number" placeholder='Price' />
-                <input name="code" value={newProduct.code} onChange={handleChange} className="code" type="text"  placeholder='Code'/>
+                    <input className="border rounded" name="name" value={newProduct.name} onChange={handleChange} type="text" placeholder='Product name' />
+                    <input className="border rounded" name="ingredients" value={newProduct.ingredients} onChange={handleChange} type="text" placeholder='Ingredients list' />
+                    <input className="border rounded" name="price" value={newProduct.price} onChange={handleChange} type="number" placeholder='Price' />
+                    <input className="border rounded" name="code" value={newProduct.code} onChange={handleChange} type="text"  placeholder='Code'/>
 
-                <input
-                    id="fileInput"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                />
+                    <input className="border "
+                        id="fileInput"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                    />
 
-                <button disabled={isUploading} onClick={handleAddProduct}>
-                    {isUploading ? "Uploading..." : "Add Product"}
-                </button>
+                    <button className="border m-4 rounded" disabled={isUploading} onClick={handleAddProduct}>
+                        {isUploading ? "Uploading..." : "Add Product"}
+                    </button>
             
+                </div>
+                
             </div>
 
 
