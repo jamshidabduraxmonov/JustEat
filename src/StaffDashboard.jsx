@@ -249,24 +249,27 @@ const StaffDashboard = () => {
             }
 
 
-            <div className=" flex justify-center">
-                <div className="grid border py-4 px-6 gap-2 rounded">
+            <div className=" flex justify-center ">
+                <div className="grid border py-4 px-6 gap-4 rounded bg-emerald-100/50">
                     <h2 className="font-black">Add New Product</h2>
                     
 
-                    <input className="border rounded" name="name" value={newProduct.name} onChange={handleChange} type="text" placeholder='Product name' />
-                    <input className="border rounded" name="ingredients" value={newProduct.ingredients} onChange={handleChange} type="text" placeholder='Ingredients list' />
-                    <input className="border rounded" name="price" value={newProduct.price} onChange={handleChange} type="number" placeholder='Price' />
-                    <input className="border rounded" name="code" value={newProduct.code} onChange={handleChange} type="text"  placeholder='Code'/>
+                    <input className="border rounded p-2 bg-slate-50 border-emerald-500" name="name" value={newProduct.name} onChange={handleChange} type="text" placeholder='Product name' />
+                    <input className="border rounded p-2 bg-slate-50 border-emerald-500" name="ingredients" value={newProduct.ingredients} onChange={handleChange} type="text" placeholder='Ingredients list' />
+                    <input className="border rounded p-2 bg-slate-50 border-emerald-500" name="price" value={newProduct.price} onChange={handleChange} type="number" placeholder='Price' />
+                    <input className="border rounded p-2 bg-slate-50 border-emerald-500" name="code" value={newProduct.code} onChange={handleChange} type="text"  placeholder='Code'/>
 
-                    <input className="border "
-                        id="fileInput"
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                    />
+                    
+                        <input className="border rounded border-dashed border-2"
+                            id="fileInput"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFileChange}
+                        />
+                    
+                    
 
-                    <button className="border m-4 rounded" disabled={isUploading} onClick={handleAddProduct}>
+                    <button className="border m-4 rounded bg-emerald-600 text-white shadow-md shadow-emerald-200 hover:bg-emerald-700" disabled={isUploading} onClick={handleAddProduct}>
                         {isUploading ? "Uploading..." : "Add Product"}
                     </button>
             
