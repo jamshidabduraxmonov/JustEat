@@ -211,47 +211,51 @@ const StaffDashboard = () => {
 
     return (
         <div className="">
-            <h1>StaffDashboard</h1>
-
             
-            {
-                orders.map( order =>{
-                    const itemsMap = order.items;
+            <h1 className="text-center text-4xl font-extrabold text-gray-900 my-8">StaffDashboard</h1>
 
-                    const productIds = Object.keys(itemsMap);
+            <div className="h-96 overflow-y-auto w-md border">
+                 {
+                    orders.map( order =>{
+                        const itemsMap = order.items;
 
-                    return (
-                        <div className="">
-                            <div key={order.id} className=" grid grid-cols-1 border max-w-md mx-6 my-2 rounded-md bg-slate-100">
-                            <h2 className="bg-slate-50  text-emerald-700 font-black" >Order #{order.id.slice(-3)}</h2>
-                            {
-                                productIds.map(productId => {
-                                    const foundProduct = data.find(product => product.id == productId);
-                                    const quantity = itemsMap[productId]
+                        const productIds = Object.keys(itemsMap);
 
-                                    if (!foundProduct) {
-                                        return <p key={productId} className="italic text-slate-400">[Deleted Item] x {quantity}</p>
-                                    }
+                        return (
+                            <div className="my-4">
+                                <div key={order.id} className=" grid grid-cols-1 border max-w-md mx-6 my-2 rounded-md bg-slate-100">
+                                <h2 className="bg-slate-50  text-emerald-700 font-black" >Order #{order.id.slice(-3)}</h2>
+                                {
+                                    productIds.map(productId => {
+                                        const foundProduct = data.find(product => product.id == productId);
+                                        const quantity = itemsMap[productId]
 
-                                    return(
-                                        <p key={productId} className="flex gap-2 text-slate-700 font-black">{foundProduct.name} x <span className="bg-emerald-100 text-emerald-700 ">{quantity}</span></p>
-                                    )
-                                })
+                                        if (!foundProduct) {
+                                            return <p key={productId} className="italic text-slate-400">[Deleted Item] x {quantity}</p>
+                                        }
 
-                                
-                            }
+                                        return(
+                                            <p key={productId} className="flex gap-2 text-slate-700 font-black">{foundProduct.name} x <span className="bg-emerald-100 text-emerald-700 ">{quantity}</span></p>
+                                        )
+                                    })
 
-                            <footer className="text-sm text-gray-500">{order.createdAt?.toDate().toLocaleTimeString([], {
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            }) || 'Loading...' }</footer>
-                        </div>
-                        </div>
-                        
-                    )
-                })
-             
-            }
+                                    
+                                }
+
+                                <footer className="text-sm text-gray-500">{order.createdAt?.toDate().toLocaleTimeString([], {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                }) || 'Loading...' }</footer>
+                            </div>
+                            </div>
+                            
+                        )
+                    })
+                
+                }
+
+            </div>
+           
 
 
             <div className=" flex justify-center ">
