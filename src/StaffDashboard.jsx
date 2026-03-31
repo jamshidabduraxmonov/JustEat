@@ -16,6 +16,8 @@ const StaffDashboard = () => {
     const [ editId, setEditId ] = useState(null);
     const [ editProduct, setEditProduct ] = useState({name: '', ingredients: '', price: '', code: ''});
 
+    const [preview, setPreview ] = useState(null)
+
     // console.log('Total Orders: ', orders);
 
     useEffect(() => {
@@ -133,7 +135,10 @@ const StaffDashboard = () => {
 
     const handleFileChange = (e) => {
         if (e.target.files[0]) {
-            setImageFile(e.target.files[0]);
+            const file = e.target.files[0];
+            setImageFile(file);
+
+            setPreview(URL.createObjectURL(file));
         }
     }
 
@@ -278,9 +283,9 @@ const StaffDashboard = () => {
             </div>
 
 
-            <div className="product-management">
+            <div className=" my-8 py-4 ">
                 
-                <h2>Product Management</h2>
+                <h2 className="text-center text-3xl font-extrabold text-gray-900 mt-2">Product Management</h2>
 
                 {
                     data.map(sandwich => {
@@ -293,34 +298,40 @@ const StaffDashboard = () => {
 
                         return(
 
-                            <div key={sandwich.id}>
+                            <div className=" flex justify-center border max-w-sm my-4 mx-4 rounded mx-auto" key={sandwich.id}>
                                 {
                                     sandwich.id === editId ? (
-                                    <>
-                                        <input type="file" accept="image/*" onChange={handleFileChange} />
-                                        <input name="name" onChange={handleEditChange} value={editProduct.name}/>
-                                        <input name="ingredients" onChange={handleEditChange} value={editProduct.ingredients}/>
-                                        <input name="code" onChange={handleEditChange} value={editProduct.code}/>
-                                        <input name="price" onChange={handleEditChange} value={editProduct.price}/>
+                                    <div className="flex flex-col items-center py-2 relative space-y-2">
+                                        <img className="w-30 h-34 rounded border" src={!preview ? image : preview} alt={name}/>
 
-                                        <button onClick={handleSave} >Save</button>
-                                    </>
+                                        <input className="absolute border-2 border-dashed w-30 h-34 border text-sm text-gray-500 
+                                            file:mr-4 file:py-2 file-px-4 file:rounded-full file:border-0 
+                                            file:text-sm file:font-semibold  file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100
+                                        " type="file" accept="image/*" onChange={handleFileChange} />
+                                        <input className="border-2 rounded" name="name" onChange={handleEditChange} value={editProduct.name}/>
+                                        <input className="border-2 rounded" name="ingredients" onChange={handleEditChange} value={editProduct.ingredients}/>
+                                        <input className="border-2 rounded" name="code" onChange={handleEditChange} value={editProduct.code}/>
+                                        <input className="border-2 rounded" name="price" onChange={handleEditChange} value={editProduct.price}/>
+
+                                        <button className="bg-green-200 py-1 px-2 rounded" onClick={handleSave} >{isUploading ? 'Uploading...' : 'Save'}</button>
+                                    </div>
                                     ) : (
-                                        <>
-                                        <div>
-                                            <img src={image} alt={name}/>
+                                        <div className="space-y-2 pt-4 space-x-2 ">
+                                    
+                                            <img className="w-30 h-34 rounded border" src={image} alt={name}/>
                                             <p key={name}>{name}</p>
                                             <p key={ingredients}>Ingredients: {ingredients}</p>
-                                            <p key={code}>{code}</p>
+                                            <p key={code}>PLU Code: {code}</p>
                                             <p>{price} AED</p>
+                                        
+                                        <button className="bg-green-200 py-1 px-2 rounded" disabled={editId !== null} onClick={()=> handleEdit(sandwich)}>Edit</button>
+                                        <button className="bg-red-500 py-1 px-2 rounded" onClick={()=> handleDelete(sandwich.id)}>Remove</button>
+
                                         </div>
-                                        <button disabled={editId !== null} onClick={()=> handleEdit(sandwich)}>Edit</button>
-                                        </>
                                         
                                     )
                                 }
                                
-                                <button onClick={()=> handleDelete(sandwich.id)}>Remove</button>
                             </div>
                             
                         )
