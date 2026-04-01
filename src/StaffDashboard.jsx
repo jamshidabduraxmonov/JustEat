@@ -120,7 +120,7 @@ const StaffDashboard = () => {
                 image: imageUrl
             });
             console.log(docRef.id);
-            setNewProduct({ name: '', price: '', code: ''});
+            setNewProduct({ name: '', ingredients: '', price: '', code: ''});
             setImageFile(null);
             document.getElementById('fileInput').value = "";
 
@@ -147,6 +147,7 @@ const StaffDashboard = () => {
 
     const handleEdit = (sandwich) => {
         setImageFile(null);
+        setPreview(null);
         setEditId(sandwich.id);
         setEditProduct(sandwich);
     }
@@ -210,140 +211,138 @@ const StaffDashboard = () => {
 
 
     return (
-        <div className="">
-            
-            <h1 className="text-center text-4xl font-extrabold text-gray-900 my-8">StaffDashboard</h1>
+    <div className="bg-gray-50 min-h-screen pb-12 font-sans">
+        
+        <h1 className="text-center text-3xl font-black text-gray-900 pt-10 pb-6 tracking-tight">Staff Dashboard</h1>
 
-            <div className="h-96 overflow-y-auto w-md border">
-                 {
-                    orders.map( order =>{
-                        const itemsMap = order.items;
+        <div className="h-[500px] overflow-y-auto w-full max-w-md mx-auto border-x border-gray-200 bg-white shadow-sm scrollbar-hide">
+             {
+                orders.map( order =>{
+                    const itemsMap = order.items;
+                    const productIds = Object.keys(itemsMap);
 
-                        const productIds = Object.keys(itemsMap);
+                    return (
+                        <div className="border-b border-gray-600 last:border-0" key={order.id}>
+                            <div className="p-4 flex flex-col space-y-3">
+                            <h2 className="text-xs font-bold uppercase tracking-widest text-emerald-600 bg-emerald-50 self-start px-2 py-1 rounded-full" >Order #{order.id.slice(-3)}</h2>
+                            <div className="space-y-1">
+                            {
+                                productIds.map(productId => {
+                                    const foundProduct = data.find(product => product.id == productId);
+                                    const quantity = itemsMap[productId]
 
-                        return (
-                            <div className="my-4">
-                                <div key={order.id} className=" grid grid-cols-1 border max-w-md mx-6 my-2 rounded-md bg-slate-100">
-                                <h2 className="bg-slate-50  text-emerald-700 font-black" >Order #{order.id.slice(-3)}</h2>
-                                {
-                                    productIds.map(productId => {
-                                        const foundProduct = data.find(product => product.id == productId);
-                                        const quantity = itemsMap[productId]
+                                    if (!foundProduct) {
+                                        return <p key={productId} className="text-sm italic text-gray-400">[Deleted Item] × {quantity}</p>
+                                    }
 
-                                        if (!foundProduct) {
-                                            return <p key={productId} className="italic text-slate-400">[Deleted Item] x {quantity}</p>
-                                        }
-
-                                        return(
-                                            <p key={productId} className="flex gap-2 text-slate-700 font-black">{foundProduct.name} x <span className="bg-emerald-100 text-emerald-700 ">{quantity}</span></p>
-                                        )
-                                    })
-
-                                    
-                                }
-
-                                <footer className="text-sm text-gray-500">{order.createdAt?.toDate().toLocaleTimeString([], {
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                }) || 'Loading...' }</footer>
-                            </div>
-                            </div>
-                            
-                        )
-                    })
-                
-                }
-
-            </div>
-           
-
-
-            <div className=" flex justify-center ">
-                <div className="grid border py-4 px-6 gap-4 rounded bg-emerald-100/50">
-                    <h2 className="font-black">Add New Product</h2>
-                    
-
-                    <input className="border rounded p-2 bg-slate-50 border-emerald-500" name="name" value={newProduct.name} onChange={handleChange} type="text" placeholder='Product name' />
-                    <input className="border rounded p-2 bg-slate-50 border-emerald-500" name="ingredients" value={newProduct.ingredients} onChange={handleChange} type="text" placeholder='Ingredients list' />
-                    <input className="border rounded p-2 bg-slate-50 border-emerald-500" name="price" value={newProduct.price} onChange={handleChange} type="number" placeholder='Price' />
-                    <input className="border rounded p-2 bg-slate-50 border-emerald-500" name="code" value={newProduct.code} onChange={handleChange} type="text"  placeholder='Code'/>
-
-                    
-                        <input className="border rounded border-dashed border-2"
-                            id="fileInput"
-                            type="file"
-                            accept="image/*"
-                            onChange={handleFileChange}
-                        />
-                    
-                    
-
-                    <button className="border m-4 rounded bg-emerald-600 text-white shadow-md shadow-emerald-200 hover:bg-emerald-700" disabled={isUploading} onClick={handleAddProduct}>
-                        {isUploading ? "Uploading..." : "Add Product"}
-                    </button>
-            
-                </div>
-                
-            </div>
-
-
-            <div className=" my-8 py-4 ">
-                
-                <h2 className="text-center text-3xl font-extrabold text-gray-900 mt-2">Product Management</h2>
-
-                {
-                    data.map(sandwich => {
-                        const name = sandwich.name;
-                        const ingredients = sandwich.ingredients;
-                        const code = sandwich.code;
-                        const price = sandwich.price;
-                        const image =  sandwich.image;
-
-
-                        return(
-
-                            <div className=" flex justify-center border max-w-sm my-4 mx-4 rounded mx-auto" key={sandwich.id}>
-                                {
-                                    sandwich.id === editId ? (
-                                    <div className="flex flex-col items-center py-2 relative space-y-2">
-                                        <img className="w-30 h-34 rounded border" src={!preview ? image : preview} alt={name}/>
-
-                                        <input className="absolute border-2 border-dashed w-30 h-34 border text-sm text-gray-500 
-                                            file:mr-4 file:py-2 file-px-4 file:rounded-full file:border-0 
-                                            file:text-sm file:font-semibold  file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100
-                                        " type="file" accept="image/*" onChange={handleFileChange} />
-                                        <input className="border-2 rounded" name="name" onChange={handleEditChange} value={editProduct.name}/>
-                                        <input className="border-2 rounded" name="ingredients" onChange={handleEditChange} value={editProduct.ingredients}/>
-                                        <input className="border-2 rounded" name="code" onChange={handleEditChange} value={editProduct.code}/>
-                                        <input className="border-2 rounded" name="price" onChange={handleEditChange} value={editProduct.price}/>
-
-                                        <button className="bg-green-200 py-1 px-2 rounded" onClick={handleSave} >{isUploading ? 'Uploading...' : 'Save'}</button>
-                                    </div>
-                                    ) : (
-                                        <div className="space-y-2 pt-4 space-x-2 ">
-                                    
-                                            <img className="w-30 h-34 rounded border" src={image} alt={name}/>
-                                            <p key={name}>{name}</p>
-                                            <p key={ingredients}>Ingredients: {ingredients}</p>
-                                            <p key={code}>PLU Code: {code}</p>
-                                            <p>{price} AED</p>
-                                        
-                                        <button className="bg-green-200 py-1 px-2 rounded" disabled={editId !== null} onClick={()=> handleEdit(sandwich)}>Edit</button>
-                                        <button className="bg-red-500 py-1 px-2 rounded" onClick={()=> handleDelete(sandwich.id)}>Remove</button>
-
-                                        </div>
-                                        
+                                    return(
+                                        <p key={productId} className="flex  justify-between items-center text-gray-800 font-medium">
+                                            <span>{foundProduct.name}</span>
+                                            <span className="bg-gray-100 text-gray-700 text-xs font-bold px-2 py-1 rounded">{quantity}</span>
+                                        </p>
                                     )
-                                }
-                               
+                                })
+                            }
                             </div>
-                            
-                        )
-                    })
-                }
+
+                            <footer className="text-[10px] uppercase font-bold text-gray-400 pt-2 border-t border-gray-50">{order.createdAt?.toDate().toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            }) || 'Loading...' }</footer>
+                        </div>
+                        </div>
+                    )
+                })
+            }
+        </div>
+       
+        <div className="flex justify-center mt-10 mb-8 px-4">
+            <div className="w-full max-w-md grid bg-white border border-gray-200 p-6 gap-4 rounded-xl shadow-sm">
+                <h2 className="font-bold text-lg text-gray-800 border-b pb-2">Add New Product</h2>
+                
+                <input className="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all" name="name" value={newProduct.name} onChange={handleChange} type="text" placeholder='Product name' />
+                <input className="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all" name="ingredients" value={newProduct.ingredients} onChange={handleChange} type="text" placeholder='Ingredients list' />
+                <input className="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all" name="price" value={newProduct.price} onChange={handleChange} type="number" placeholder='Price' />
+                <input className="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all" name="code" value={newProduct.code} onChange={handleChange} type="text"  placeholder='Code'/>
+
+                <input className="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 border-2 border-dashed border-gray-200 rounded-lg p-2"
+                    id="fileInput"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                />
+                
+                <button className="w-full py-3 rounded-lg bg-emerald-600 text-white font-bold text-sm shadow-lg shadow-emerald-100 hover:bg-emerald-700 active:scale-[0.98] transition-transform disabled:opacity-50" disabled={isUploading} onClick={handleAddProduct}>
+                    {isUploading ? "Uploading..." : "Add Product"}
+                </button>
             </div>
         </div>
-    );
+
+        <div className="mt-12 py-4">
+    <h2 className="text-center text-2xl font-bold text-gray-900 mb-6">Product Management</h2>
+
+
+    <div className="h-[600px] overflow-y-auto w-full max-w-2xl mx-auto border border-gray-200 bg-white shadow-inner rounded-xl p-2 space-y-2">
+        {
+            data.map(sandwich => {
+                const name = sandwich.name;
+                const ingredients = sandwich.ingredients;
+                const code = sandwich.code;
+                const price = sandwich.price;
+                const image = sandwich.image;
+
+                return (
+                    <div className="w-full bg-white border border-gray-100 rounded-lg shadow-sm hover:border-emerald-200 transition-colors" key={sandwich.id}>
+                        {
+                            sandwich.id === editId ? (
+                                <div className="flex flex-col p-4 space-y-3 bg-slate-50 rounded-lg">
+                                    <div className="flex gap-4">
+                                        <div className="relative w-24 h-24 shrink-0">
+                                            <img className="w-full h-full object-cover rounded-md border border-gray-200" src={!preview ? image : preview} alt={name} />
+                                            <input className="absolute inset-0 opacity-0 cursor-pointer" type="file" accept="image/*" onChange={handleFileChange} />
+                                        </div>
+                                        <div className="flex-1 space-y-2">
+                                            <input className="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold" name="name" onChange={handleEditChange} value={editProduct.name} placeholder="Name" />
+                                            <input className="w-full border border-gray-300 rounded px-2 py-1 text-xs" name="ingredients" onChange={handleEditChange} value={editProduct.ingredients} placeholder="Ingredients" />
+                                            <div className="flex gap-2">
+                                                <input className="w-full border border-emerald-400 rounded px-2 py-1 text-xs font-bold text-emerald-700" name="code" onChange={handleEditChange} value={editProduct.code} placeholder="PLU" />
+                                                <input className="w-full border border-gray-300 rounded px-2 py-1 text-xs" name="price" onChange={handleEditChange} value={editProduct.price} placeholder="Price" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button className="w-full bg-emerald-600 text-white py-2 rounded font-bold text-xs" onClick={handleSave}>{isUploading ? 'Uploading...' : 'Save Changes'}</button>
+                                </div>
+                            ) : (
+                                <div className="flex items-center p-3 gap-4">
+                                    
+                                    <img className="w-16 h-16 object-cover rounded-md border border-gray-100 shrink-0" src={image} alt={name} />
+
+                                    
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-2">
+                                            <span className="bg-emerald-600 text-white text-[11px] font-black px-2 py-0.5 rounded shadow-sm shrink-0">PLU: {code}</span>
+                                            <p className="font-bold text-gray-900 truncate">{name}</p>
+                                        </div>
+                                        <p className="text-[11px] text-gray-500 line-clamp-1">{ingredients}</p>
+                                        <p className="text-xs font-black text-gray-700 mt-0.5">{price} AED</p>
+                                    </div>
+
+                                    
+                                    <div className="flex flex-col gap-1 shrink-0">
+                                        <button className="bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 text-gray-600 px-3 py-1.5 rounded font-bold text-[10px] uppercase transition-colors" disabled={editId !== null} onClick={() => handleEdit(sandwich)}>Edit</button>
+                                        <button className="bg-red-50 hover:bg-red-100 text-red-500 px-3 py-1.5 rounded font-bold text-[10px] uppercase transition-colors" onClick={() => handleDelete(sandwich.id)}>Del</button>
+                                    </div>
+                                </div>
+                            )
+                        }
+                    </div>
+                )
+            })
+        }
+    </div>
+</div>
+    </div>
+);
 };
 
 export default StaffDashboard;

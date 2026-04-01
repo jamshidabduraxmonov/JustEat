@@ -52,7 +52,7 @@ export function ProductCard({ name, onAdd, price, onRemove, image, code, id, cle
       {count > 0 && (
         <div className="mt-auto bg-slate-50 flex items-center justify-between p-2 rounded-xl border border-slate-100 ">
 
-          <button className="w-10 h-10 bg-white border border-slate-200 rounded-lg shadow-sm active:scale-90"
+          <button className="w-10 font-black h-10 bg-white border border-slate-200 rounded-lg shadow-sm active:scale-90"
           
           onClick={(e) => {
             e.stopPropagation();
@@ -64,7 +64,7 @@ export function ProductCard({ name, onAdd, price, onRemove, image, code, id, cle
 
 
 
-          <button className="w-10 h-10 bg-white border border-slate-200 rounded-lg shadow-sm active:scale-90"
+          <button className="w-10 font-black h-10 bg-white border border-slate-200 rounded-lg shadow-sm active:scale-90"
           
           onClick={(e) =>{
             e.stopPropagation();
