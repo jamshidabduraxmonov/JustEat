@@ -3,11 +3,11 @@ import {useState, useEffect} from 'react';
 import { db } from './firebase.js';
 
 
-const StaffDashboard = () => {
+const StaffDashboard = () => {  
     const [orders, setOrders] = useState([]); // No_1 state
     const [data, setData] = useState([]);
 
-    const [newProduct, setNewProduct] = useState({name: '', ingredients: '', price: '', code: ''});
+    const [newProduct, setNewProduct] = useState({name: '', ingredients: '', price: '', code: '', category: ''});
 
     const [ imageFile, setImageFile ] = useState(null);
 
@@ -120,7 +120,7 @@ const StaffDashboard = () => {
                 image: imageUrl
             });
             console.log(docRef.id);
-            setNewProduct({ name: '', ingredients: '', price: '', code: ''});
+            setNewProduct({ name: '', ingredients: '', price: '', code: '', category: ''});
             setImageFile(null);
             document.getElementById('fileInput').value = "";
 
@@ -271,6 +271,45 @@ const StaffDashboard = () => {
                     accept="image/*"
                     onChange={handleFileChange}
                 />
+
+
+
+                <div className="grid gap-2">
+                    <span className="text-sm font-bold text-slate-500 ml-1">Category</span>
+                    
+                    {/* THE TRACK */}
+                    <div className="flex bg-slate-100 p-1 rounded-xl w-full">
+                        
+                        {/* SEGMENT 1 */}
+                        <label className="flex-1">
+                        <input type="radio" name="category" value="sandwiches" onChange={handleChange} className="sr-only peer" />
+                        <div className="text-center py-2 rounded-lg cursor-pointer text-sm font-bold text-slate-500 transition-all
+                                        peer-checked:bg-white peer-checked:text-emerald-600 peer-checked:shadow-sm">
+                            Sandwiches
+                        </div>
+                        </label>
+
+                        {/* SEGMENT 2 */}
+                        <label className="flex-1">
+                        <input type="radio" name="category" value="croissants" onChange={handleChange} className="sr-only peer" />
+                        <div className="text-center py-2 rounded-lg cursor-pointer text-sm font-bold text-slate-500 transition-all
+                                        peer-checked:bg-white peer-checked:text-emerald-600 peer-checked:shadow-sm">
+                            Bakery
+                        </div>
+                        </label>
+
+                        {/* SEGMENT 3 */}
+                        <label className="flex-1">
+                        <input type="radio" name="category" value="starbucks" onChange={handleChange} className="sr-only peer" />
+                        <div className="text-center py-2 rounded-lg cursor-pointer text-sm font-bold text-slate-500 transition-all
+                                        peer-checked:bg-white peer-checked:text-emerald-600 peer-checked:shadow-sm">
+                            Coffee
+                        </div>
+                        </label>
+
+                    </div>
+                </div>
+
                 
                 <button className="w-full py-3 rounded-lg bg-emerald-600 text-white font-bold text-sm shadow-lg shadow-emerald-100 hover:bg-emerald-700 active:scale-[0.98] transition-transform disabled:opacity-50" disabled={isUploading} onClick={handleAddProduct}>
                     {isUploading ? "Uploading..." : "Add Product"}
