@@ -291,7 +291,7 @@ const StaffDashboard = () => {
 
                         {/* SEGMENT 2 */}
                         <label className="flex-1">
-                        <input type="radio" name="category" value="croissants" onChange={handleChange} className="sr-only peer" />
+                        <input type="radio" name="category" value="bakery" onChange={handleChange} className="sr-only peer" />
                         <div className="text-center py-2 rounded-lg cursor-pointer text-sm font-bold text-slate-500 transition-all
                                         peer-checked:bg-white peer-checked:text-emerald-600 peer-checked:shadow-sm">
                             Bakery

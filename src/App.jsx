@@ -114,16 +114,27 @@ export default function MainMenu() {
 
   const productRef = collection(db, 'products');
 
+  const [ activeCategory, setActiveCategory ] = useState('sandwiches')
+
+  const [ allProducts, setAllProducts] = useState([])
+
   useEffect( () => {
     onSnapshot(productRef, (snapshot)=> {
       let tempProducts = [];
       snapshot.forEach((doc) => {
         const realData = doc.data();
         tempProducts.push({id: doc.id, ...realData});
-        setSandwiches(tempProducts);
+        setAllProducts(tempProducts);
       })
     })
   }, [])
+
+  useEffect( ()=> {
+      const filtered = allProducts.filter(product => product.category === activeCategory);
+      setSandwiches(filtered);
+      console.log(activeCategory);
+  }, [activeCategory, allProducts]);
+
 
   function addToTotal(price, id) {
 
@@ -237,15 +248,15 @@ useEffect( () => {
                   <h1 className="text-xl font-black tracking-tighter text-emerald-600">Quick Order</h1>
                   
                   <div className="flex flew-wrap justify-center  gap-2">
-                      <button className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all">
+                      <button className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all" onClick={() => setActiveCategory('sandwiches')}>
                         Sandwiches/Wraps
                       </button>
 
-                      <button className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all">
-                        Muffins/Rolls
+                      <button className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all" onClick={() => setActiveCategory('bakery')}>
+                        Croissant/Rolls
                       </button>
 
-                      <button className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all">
+                      <button className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all" onClick={() => setActiveCategory('starbucks')}>
                         Starbucks
                       </button>
                   </div>
