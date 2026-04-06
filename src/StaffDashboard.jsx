@@ -86,7 +86,7 @@ const StaffDashboard = () => {
     }
 
    const handleAddProduct = async() => {
-    // Cloudinary logic ////////////////////////////////////////////////
+    // Cloudinary logic 
 
         if(!imageFile) return alert("Please, select an image first!");
 

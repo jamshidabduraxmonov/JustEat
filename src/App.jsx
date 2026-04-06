@@ -97,16 +97,16 @@ export function ProductCard({ name, onAdd, price, onRemove, image, code, id, cle
 
 export default function MainMenu() {
 
-  const [ total, setTotal ] = useState(0); // Total price
-  const [ itemCount, setItemCount] = useState(0); // Total quantity of products
+  const [ total, setTotal ] = useState(0);
+  const [ itemCount, setItemCount] = useState(0); 
   
-  const [ sandwiches, setSandwiches ] = useState([]); // Filtered Products which are displayed
+  const [ sandwiches, setSandwiches ] = useState([]);
 
-  const [ cartContents, setCartContents ] = useState({}); // All the chosen items to be bought
+  const [ cartContents, setCartContents ] = useState({});
 
-  const [ isPopupOpen, setIsPopupOpen ] = useState(false); // State of confirmation popup
+  const [ isPopupOpen, setIsPopupOpen ] = useState(false); 
 
-  const [ isConfirmed, setIsConfirmed ] = useState(false); // State of confirmation itself
+  const [ isConfirmed, setIsConfirmed ] = useState(false);
 
   const [ isBusy, setIsBusy ] = useState(false); // State indicated if app is transferring data
 
@@ -170,7 +170,7 @@ export default function MainMenu() {
       setCartContents(tempContent);
 
     }else {
-      let temp = {...cartContents} // using the copy of the actual state to prevent any mutation during deletion
+      let temp = {...cartContents} // using the copy of the actual state to prevent any mutation during the deletion
       delete temp[id];
       setCartContents(temp);
     }
@@ -190,7 +190,7 @@ export default function MainMenu() {
         items: cartContents,
         totalPrice: total,
         status: "pending",
-        createdAt: serverTimestamp()                           
+        createdAt: serverTimestamp()
       };
       const docRef = await addDoc(collectionRef, newOrder);
       console.log("Success! Order ID:", docRef.id);
@@ -203,7 +203,7 @@ export default function MainMenu() {
         alert("Something went wrong. Please try again or tell the cashier!");
     }finally{
       setIsBusy(false);
-    }/////////////////////////////
+    }
 }
 
 
@@ -338,7 +338,7 @@ useEffect( () => {
           
           <button 
             className="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-emerald-100 active:scale-95 transition-all disabled:opacity-50"
-            onClick={() => { handleOrder() }}
+            onClick={() => { handleOrder() }} 
             disabled={isBusy}
           >
             {isBusy ? "Sending..." : "Confirm"}
