@@ -21,15 +21,15 @@ const StaffDashboard = () => {
     // console.log('Total Orders: ', orders);
 
     useEffect(() => {
-        const ordersCollection = collection(db, 'orders');
+        const ordersCollection = collection(db, 'orders');  // collection address
 
-        const q = query(ordersCollection, orderBy('createdAt', 'desc'));
+        const q = query(ordersCollection, orderBy('createdAt', 'desc')); // destructuring the data list on descending pattern
 
-        const unsubscribe = onSnapshot(q, (snapshot)=> {
-            let tempOrders = [];
+        const unsubscribe = onSnapshot(q, (snapshot)=> { // Transferring back the data using onSnapshot listeners
+            let tempOrders = []; 
             snapshot.forEach((doc) => {
-                const realData = doc.data();
-                tempOrders.push({id: doc.id, ...realData});
+                const realData = doc.data(); // Retrieving the data
+                tempOrders.push({id: doc.id, ...realData}); // using spread operator to push realData with doc id
              });
             setOrders(tempOrders);
 

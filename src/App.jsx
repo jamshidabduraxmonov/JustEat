@@ -15,7 +15,7 @@ export function ProductCard({ name, onAdd, price, onRemove, image, code, id, cle
 
   function addUp(){
     setCount(count  + 1);
-    onAdd(price, id);
+    onAdd(price, id); // Function trigger
     return count;
   }
 
@@ -100,36 +100,36 @@ export default function MainMenu() {
   const [ total, setTotal ] = useState(0); // Total price
   const [ itemCount, setItemCount] = useState(0); // Total quantity of products
   
-  const [ sandwiches, setSandwiches ] = useState([]); // All the products in it
+  const [ sandwiches, setSandwiches ] = useState([]); // Filtered Products which are displayed
 
   const [ cartContents, setCartContents ] = useState({}); // All the chosen items to be bought
 
-  const [ isPopupOpen, setIsPopupOpen ] = useState(false); 
+  const [ isPopupOpen, setIsPopupOpen ] = useState(false); // State of confirmation popup
 
-  const [ isConfirmed, setIsConfirmed ] = useState(false);
+  const [ isConfirmed, setIsConfirmed ] = useState(false); // State of confirmation itself
 
-  const [ isBusy, setIsBusy ] = useState(false);
+  const [ isBusy, setIsBusy ] = useState(false); // State indicated if app is transferring data
 
   const [ orderId, setOrderId] = useState("");
 
-  const productRef = collection(db, 'products');
+  const productRef = collection(db, 'products'); // Adress reference of database collection
 
-  const [ activeCategory, setActiveCategory ] = useState('sandwiches')
+  const [ activeCategory, setActiveCategory ] = useState('sandwiches') // State indicates an active selected category
 
-  const [ allProducts, setAllProducts] = useState([])
+  const [ allProducts, setAllProducts] = useState([]) // List of all products in the  database
 
-  useEffect( () => {
-    onSnapshot(productRef, (snapshot)=> {
+  useEffect( () => {  // Using useEffect with '[]' dependency array which means it is run only once when it is loaded
+    onSnapshot(productRef, (snapshot)=> {  // Using onSnapshot listener to fetch the data from db collection  
       let tempProducts = [];
       snapshot.forEach((doc) => {
-        const realData = doc.data();
-        tempProducts.push({id: doc.id, ...realData});
-        setAllProducts(tempProducts);
+        const realData = doc.data();  // Data retrieval
+        tempProducts.push({id: doc.id, ...realData}); // Using spread operator to push realData with the id
+        setAllProducts(tempProducts); 
       })
     })
   }, [])
 
-  useEffect( ()=> {
+  useEffect( ()=> {  // Filter only when activeCategory state changed or once loaded the data
       const filtered = allProducts.filter(product => product.category === activeCategory);
       setSandwiches(filtered);
       console.log(activeCategory);
@@ -143,10 +143,10 @@ export default function MainMenu() {
     setTotal(total + numericPrice);
     setItemCount(itemCount + 1);
     
-    // To get the quantity of this codet
+    // To get the quantity of this product order
     const currentQty = cartContents[id] || 0;
 
-    setCartContents({
+    setCartContents({ // Create objects display product id as keys and product order quantity as values
       ...cartContents,
       [id]: currentQty + 1
     });
@@ -161,7 +161,7 @@ export default function MainMenu() {
     const currentQty = cartContents[id] || 0;
 
     if(currentQty > 1) {
-      let tempContent = {...cartContents};
+      let tempContent = {...cartContents};  
 
       tempContent = {...tempContent, 
         [id]: currentQty - 1
@@ -170,7 +170,7 @@ export default function MainMenu() {
       setCartContents(tempContent);
 
     }else {
-      let temp = {...cartContents}
+      let temp = {...cartContents} // using the copy of the actual state to prevent any mutation during deletion
       delete temp[id];
       setCartContents(temp);
     }
@@ -190,7 +190,7 @@ export default function MainMenu() {
         items: cartContents,
         totalPrice: total,
         status: "pending",
-        createdAt: serverTimestamp()
+        createdAt: serverTimestamp()                           
       };
       const docRef = await addDoc(collectionRef, newOrder);
       console.log("Success! Order ID:", docRef.id);
@@ -203,7 +203,7 @@ export default function MainMenu() {
         alert("Something went wrong. Please try again or tell the cashier!");
     }finally{
       setIsBusy(false);
-    }
+    }/////////////////////////////
 }
 
 
@@ -255,7 +255,7 @@ useEffect( () => {
                       <button className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all" onClick={() => setActiveCategory('bakery')}>
                         Croissant/Rolls
                       </button>
-
+                    
                       <button className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all" onClick={() => setActiveCategory('starbucks')}>
                         Starbucks
                       </button>
@@ -267,7 +267,7 @@ useEffect( () => {
              </nav>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6 bg-slate-50 ">
-              <Menu sandwiches={sandwiches} addToTotal={addToTotal} removeFromTotal={removeFromTotal} clearProduct={clearProduct}/>
+              <Menu sandwiches={sandwiches} addToTotal={addToTotal} removeFromTotal={removeFromTotal} clearProduct={clearProduct} />
             </div>
 
             
@@ -338,7 +338,7 @@ useEffect( () => {
           
           <button 
             className="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-emerald-100 active:scale-95 transition-all disabled:opacity-50"
-            onClick={() => { handleOrder() }} 
+            onClick={() => { handleOrder() }}
             disabled={isBusy}
           >
             {isBusy ? "Sending..." : "Confirm"}
