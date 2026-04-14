@@ -14,7 +14,8 @@ const StaffDashboard = () => {
     const [ isUploading, setIsUploading ] = useState(false);
 
     const [ editId, setEditId ] = useState(null);
-    const [ editProduct, setEditProduct ] = useState({name: '', ingredients: '', price: '', code: ''});
+
+    const [ editProduct, setEditProduct ] = useState({name: '', ingredients: '', price: '', code: '', category: ''});
 
     const [preview, setPreview ] = useState(null)
 
@@ -347,6 +348,37 @@ const StaffDashboard = () => {
                                                 <input className="w-full border border-emerald-400 rounded px-2 py-1 text-xs font-bold text-emerald-700" name="code" onChange={handleEditChange} value={editProduct.code} placeholder="PLU" />
                                                 <input className="w-full border border-gray-300 rounded px-2 py-1 text-xs" name="price" onChange={handleEditChange} value={editProduct.price} placeholder="Price" />
                                             </div>
+                                            
+                                        </div>
+                                        <div className="">
+                        
+                                            {/* SEGMENT 1 */}
+                                            <label className="flex-1">
+                                            <input type="radio" name="category" value="sandwiches" onChange={handleEditChange} className="sr-only peer" />
+                                            <div className="text-center py-2 rounded-lg cursor-pointer text-sm font-bold text-slate-500 transition-all
+                                                            peer-checked:bg-white peer-checked:text-emerald-600 peer-checked:shadow-sm">
+                                                Sandwiches
+                                            </div>
+                                            </label>
+
+                                            {/* SEGMENT 2 */}
+                                            <label className="flex-1">
+                                            <input type="radio" name="category" value="bakery" onChange={handleEditChange} className="sr-only peer" />
+                                            <div className="text-center py-2 rounded-lg cursor-pointer text-sm font-bold text-slate-500 transition-all
+                                                            peer-checked:bg-white peer-checked:text-emerald-600 peer-checked:shadow-sm">
+                                                Bakery
+                                            </div>
+                                            </label>
+
+                                            {/* SEGMENT 3 */}
+                                            <label className="flex-1">
+                                            <input type="radio" name="category" value="starbucks" onChange={handleEditChange} className="sr-only peer" />
+                                            <div className="text-center py-2 rounded-lg cursor-pointer text-sm font-bold text-slate-500 transition-all
+                                                            peer-checked:bg-white peer-checked:text-emerald-600 peer-checked:shadow-sm">
+                                                Coffee
+                                            </div>
+                                            </label>
+
                                         </div>
                                     </div>
                                     <button className="w-full bg-emerald-600 text-white py-2 rounded font-bold text-xs" onClick={handleSave}>{isUploading ? 'Uploading...' : 'Save Changes'}</button>
