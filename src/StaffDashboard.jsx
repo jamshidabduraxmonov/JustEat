@@ -17,7 +17,9 @@ const StaffDashboard = () => {
 
     const [ editProduct, setEditProduct ] = useState({name: '', ingredients: '', price: '', code: '', category: ''});
 
-    const [preview, setPreview ] = useState(null)
+    const [preview, setPreview ] = useState(null);
+
+    const [notification, setNotification] = useState(false);
 
     // console.log('Total Orders: ', orders);
 
@@ -33,12 +35,26 @@ const StaffDashboard = () => {
                 tempOrders.push({id: doc.id, ...realData}); // using spread operator to push realData with doc id
              });
             setOrders(tempOrders);
-
+            
+            console.log("notification: ", notification);
+            if(notification === true) {
+                notify();
+            }
 
          });
 
         return() => unsubscribe();
     }, []);
+
+
+    async function notify() {
+        const audio = new Audio('/src/assets/confirmation.wav');
+        await audio.play();
+    }
+
+    if(notification) {
+        notify();
+    }
 
 
     useEffect(() => {
@@ -55,7 +71,7 @@ const StaffDashboard = () => {
         });
 
         return() => unsubscribe2();
-    }, [])
+    }, []);
 
 
     async function handleDelete(productId) {
@@ -215,6 +231,14 @@ const StaffDashboard = () => {
     <div className="bg-gray-50 p-6 min-h-screen pb-12 font-sans">
         
         <h1 className="text-center text-3xl font-black text-gray-900 pt-10 pb-6 tracking-tight">Staff Dashboard</h1>
+
+        <div>
+            {notification ? (
+                <button className="bg-green-600" onClick={()=> {setNotification(false)}}>Notification On</button>
+            ) : (<button className="bg-red-600" onClick={()=> {setNotification(true)}}>Notification Off</button>)
+            }
+           
+        </div>
 
 
         <h3 className="text-2xl text-center p-4 font-bold text-gray-900">Live Orders</h3>
