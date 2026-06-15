@@ -212,18 +212,20 @@ const StaffDashboard = () => {
 
 
     return (
-    <div className="bg-gray-50 min-h-screen pb-12 font-sans">
+    <div className="bg-gray-50 p-6 min-h-screen pb-12 font-sans">
         
         <h1 className="text-center text-3xl font-black text-gray-900 pt-10 pb-6 tracking-tight">Staff Dashboard</h1>
 
-        <div className="h-[500px] overflow-y-auto w-full max-w-md mx-auto border-x border-gray-200 bg-white shadow-sm scrollbar-hide">
+
+        <h3 className="text-2xl text-center p-4 font-bold text-gray-900">Live Orders</h3>
+        <div className="h-[500px] border rounded-md mx-14 overflow-y-auto w-full max-w-md mx-auto border-x border-gray-600 bg-white shadow-sm scrollbar-hide p-6 flex flex-col gap-4">
              {
                 orders.map( order =>{
                     const itemsMap = order.items;
                     const productIds = Object.keys(itemsMap);
 
                     return (
-                        <div className="border-b border-gray-600 last:border-0" key={order.id}>
+                        <div className="border rounded-xl border-amber-600" key={order.id}>
                             <div className="p-4 flex flex-col space-y-3">
                             <h2 className="text-xs font-bold uppercase tracking-widest text-emerald-600 bg-emerald-50 self-start px-2 py-1 rounded-full" >Order #{order.id.slice(-3)}</h2>
                             <div className="space-y-1">
