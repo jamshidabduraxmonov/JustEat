@@ -1,6 +1,7 @@
 import {collection, query, onSnapshot, orderBy, addDoc, doc, deleteDoc, updateDoc} from 'firebase/firestore';
 import {useState, useEffect} from 'react';
 import { db } from './firebase.js';
+import sound from './assets/notify.wav'
 
 
 const StaffDashboard = () => {  
@@ -48,7 +49,7 @@ const StaffDashboard = () => {
 
 
     async function notify() {
-        const audio = new Audio("./src/assets/mixkit-software-interface-back-2575 (1).wav");
+        const audio = new Audio(sound);
         await audio.play();
     }
 
