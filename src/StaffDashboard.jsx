@@ -48,7 +48,7 @@ const StaffDashboard = () => {
 
 
     async function notify() {
-        const audio = new Audio('/src/assets/confirmation.wav');
+        const audio = new Audio("./src/assets/mixkit-software-interface-back-2575 (1).wav");
         await audio.play();
     }
 
