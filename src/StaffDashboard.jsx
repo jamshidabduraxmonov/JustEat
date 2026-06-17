@@ -234,10 +234,9 @@ const StaffDashboard = () => {
         <h1 className="text-center text-3xl font-black text-gray-900 pt-10 pb-6 tracking-tight">Staff Dashboard</h1>
 
         <div>
-            {notification ? (
-                <button className="bg-green-600" onClick={()=> {setNotification(false)}}>Notification On</button>
-            ) : (<button className="bg-red-600" onClick={()=> {setNotification(true)}}>Notification Off</button>)
-            }
+            
+            <button className={`${notification ? 'bg-green-600' : 'bg-red-600'} transition-opacity duration-2000  ${notification ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'} p-1 rounded text-white`} onClick={()=> {setNotification(true)}}>{!notification ? "Allow Notification?" : "Notification Allowed!"}</button>
+            
            
         </div>
 
