@@ -199,6 +199,8 @@ export default function MainMenu() {
         status: "pending",
         createdAt: serverTimestamp()
       };
+
+      
       const docRef = await addDoc(collectionRef, newOrder);
       console.log("Success! Order ID:", docRef.id);
       if(docRef.id) {
