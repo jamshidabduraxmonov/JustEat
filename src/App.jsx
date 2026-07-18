@@ -1,11 +1,13 @@
 import {useState, useEffect} from 'react';
 import { db } from './firebase.js';
-import {onSnapshot} from 'firebase/firestore';
-
-import {collection, addDoc, serverTimestamp} from 'firebase/firestore';
+import {onSnapshot, collection, addDoc, serverTimestamp} from 'firebase/firestore';
 import StaffDashboard from './StaffDashboard.jsx';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import {Menu} from './Menu.jsx';
+import { useAuth } from './AuthProvider.jsx';
+import Login from './Login.jsx';
+import Register from './Register.jsx';
+import Orders from './Orders.jsx';
 
 
 export function ProductCard({ name, onAdd, price, onRemove, image, code, id, clearProduct, ingredients }) {
@@ -119,11 +121,14 @@ export default function MainMenu() {
 
   const [ orderId, setOrderId] = useState("");
 
-  const productRef = collection(db, 'products'); // Adress reference of database collection
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const productRef = collection(db, 'products'); // Address reference of database collection
 
   const [ activeCategory, setActiveCategory ] = useState('sandwiches') // State indicates an active selected category
 
-  const [ allProducts, setAllProducts] = useState([]) // List of all products in the  database
+  const [ allProducts, setAllProducts] = useState([]) // List of all products in the database
 
   useEffect( () => {  // Using useEffect with '[]' dependency array which means it is run only once when it is loaded
     onSnapshot(productRef, (snapshot)=> {  // Using onSnapshot listener to fetch the data from db collection  
@@ -197,6 +202,8 @@ export default function MainMenu() {
         items: cartContents,
         totalPrice: total,
         status: "pending",
+        userId: user?.uid || null,
+        userEmail: user?.email || null,
         createdAt: serverTimestamp()
       };
 
@@ -230,7 +237,14 @@ const clearProduct = (id, price) => {
     setItemCount(itemCount - qty);
 }
 
-
+const handleLogout = async () => {
+  try {
+    await logout();
+    navigate('/login', { replace: true });
+  } catch (error) {
+    console.error('Logout failed:', error);
+  }
+};
 
  useEffect( () => {
   console.log(`Total: ${total}$ - ${itemCount} products`);
@@ -247,16 +261,19 @@ useEffect( () => {
   
 
  return (
-  <BrowserRouter>
     <div className="app-container pb-40"> 
       <Routes>
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/orders' element={<Orders />} />
+        <Route path='/orders/:orderId' element={<Orders />} />
         <Route path='/' element={
           <>
              <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
                   <h1 className="text-xl font-black tracking-tighter text-emerald-600">Quick Order</h1>
                   
-                  <div className="flex flew-wrap justify-center  gap-2">
+                  <div className="flex flex-wrap justify-center  gap-2">
                       <button className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all" onClick={() => setActiveCategory('sandwiches')}>
                         Sandwiches/Wraps
                       </button>
@@ -268,6 +285,40 @@ useEffect( () => {
                       <button className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all" onClick={() => setActiveCategory('starbucks')}>
                         Starbucks
                       </button>
+                  </div>
+
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {!user ? (
+                      <>
+                        <button
+                          className="px-4 py-2 rounded-full bg-emerald-500 text-white text-sm font-bold hover:bg-emerald-600 active:scale-95 transition-all"
+                          onClick={() => navigate('/login')}
+                        >
+                          Login
+                        </button>
+                        <button
+                          className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-slate-200 active:scale-95 transition-all"
+                          onClick={() => navigate('/register')}
+                        >
+                          Register
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-slate-200 active:scale-95 transition-all"
+                          onClick={() => navigate('/orders')}
+                        >
+                          My Orders
+                        </button>
+                        <button
+                          className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-slate-200 active:scale-95 transition-all"
+                          onClick={handleLogout}
+                        >
+                          Sign out
+                        </button>
+                      </>
+                    )}
                   </div>
 
                   
@@ -389,8 +440,7 @@ useEffect( () => {
         <Route path="/admin" element={<StaffDashboard />} />
       </Routes>
     </div>
-  </BrowserRouter>
-);
+  );
 
 
 
