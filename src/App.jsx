@@ -120,6 +120,35 @@ export default function MainMenu() {
   const [ isBusy, setIsBusy ] = useState(false); // State indicated if app is transferring data
 
   const [ orderId, setOrderId] = useState("");
+  
+  const [ userDeliveryLocation, setUserDeliveryLocation ] = useState({
+    lat: 25.265,
+    lng: 55.309
+  });
+
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      console.warn('Geolocation is not available in this browser.');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserDeliveryLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+      },
+      (error) => {
+        console.warn('Unable to obtain current location:', error.message);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 10000,
+      }
+    );
+  }, []);
 
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -204,6 +233,11 @@ export default function MainMenu() {
         status: "pending",
         userId: user?.uid || null,
         userEmail: user?.email || null,
+        deliveryLocation: userDeliveryLocation,
+        restaurantLocation: {
+          lat: 25.265,
+          lng: 55.309
+        },
         createdAt: serverTimestamp()
       };
 
@@ -408,16 +442,16 @@ useEffect( () => {
         <>
           <button 
             className="absolute top-4 right-4 text-slate-400 font-bold text-xl"
-            onClick={() => {setIsPopupOpen(false); window.location.reload()}}
+            onClick={() => {setIsPopupOpen(false); navigate(`/orders/${orderId}`); window.location.reload()}}
           >
             x
           </button>
           
           <h3 className="text-2xl font-black text-slate-800 mb-2">Order Confirmed</h3>
           
-          <p className="text-slate-500 mb-6">Show these codes to the cashier:</p>
+          <p className="text-slate-500 mb-6">Your order is on the way! Show these codes to the cashier:</p>
           
-          <div className="bg-slate-900 text-emerald-400 p-6 rounded-2xl font-mono text-center space-y-2 mb-4">
+          <div className="bg-slate-900 text-emerald-400 p-6 rounded-2xl font-mono text-center space-y-2 mb-6">
             {codeKeys.map((codeKey) => {
               const spcProduct = sandwiches.find(item => item.id === codeKey);
               const code = spcProduct.code;
@@ -429,6 +463,13 @@ useEffect( () => {
               )
             })}
           </div>
+
+          <button
+            onClick={() => { setIsPopupOpen(false); navigate(`/orders/${orderId}`); }}
+            className="w-full bg-emerald-500 text-white font-bold py-3 rounded-2xl hover:bg-emerald-600 transition-all active:scale-95"
+          >
+            Track Delivery
+          </button>
         </>
       )}
     </div>
