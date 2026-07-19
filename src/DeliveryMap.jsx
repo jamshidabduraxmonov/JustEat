@@ -79,11 +79,10 @@ export default function DeliveryMap({ startLocation, endLocation, orderId, order
 
   async function fetchRoute() {
     try {
-      const response = await fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
+      const response = await fetch('/api/route', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'Authorization': 'eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjU1ZDhlNWQ1Yzg3YTRkNTQ5MWZmNzM3MjBmNTc1OGEyIiwiaCI6Im11cm11cjY0In0='
+          'Content-Type': 'application/json; charset=utf-8'
         },
         body: JSON.stringify({
           coordinates: [
