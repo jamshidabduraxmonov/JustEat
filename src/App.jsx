@@ -230,7 +230,7 @@ export default function MainMenu() {
       const newOrder = {
         items: cartContents,
         totalPrice: total,
-        status: "pending",
+        status: "delivering",
         userId: user?.uid || null,
         userEmail: user?.email || null,
         deliveryLocation: userDeliveryLocation,
@@ -238,7 +238,9 @@ export default function MainMenu() {
           lat: 25.265,
           lng: 55.309
         },
-        createdAt: serverTimestamp()
+        createdAt: serverTimestamp(),
+        startedAt: serverTimestamp(),
+        estimatedDurationSeconds: 150
       };
 
       

@@ -1,6 +1,8 @@
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, CircleMarker, Popup, Polyline, useMap } from 'react-leaflet';
-import { useRef, useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from './firebase.js';
 
 function FitRouteBounds({ positions }) {
   const map = useMap();
@@ -14,40 +16,66 @@ function FitRouteBounds({ positions }) {
   return null;
 }
 
-const driverIcon = L.divIcon({
-  html: '<div style="font-size:18px; line-height:1;">🚚</div>',
-  className: 'driver-emoji-icon',
-  iconSize: [30, 30],
-  iconAnchor: [15, 15],
+const startIcon = L.divIcon({
+  html: `
+    <div style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#0f766e;color:white;font-weight:700;font-size:18px;box-shadow:0 0 0 4px rgba(15,118,110,0.16);">
+      S
+    </div>
+  `,
+  className: 'start-marker-icon',
+  iconSize: [36, 36],
+  iconAnchor: [18, 36],
 });
 
-export default function DeliveryMap({ startLocation, endLocation, orderId, height = '400px' }) {
+const finishIcon = L.divIcon({
+  html: `
+    <div style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;">
+      <div style="width:30px;height:30px;border-radius:8px;overflow:hidden;box-shadow:0 0 0 4px rgba(17,24,39,0.14);">
+        <div style="width:50%;height:50%;background:#111;float:left;"></div>
+        <div style="width:50%;height:50%;background:#fff;float:left;"></div>
+        <div style="width:50%;height:50%;background:#fff;float:left;"></div>
+        <div style="width:50%;height:50%;background:#111;float:left;"></div>
+      </div>
+    </div>
+  `,
+  className: 'finish-marker-icon',
+  iconSize: [44, 44],
+  iconAnchor: [22, 44],
+});
+
+const driverIcon = L.divIcon({
+  html: `
+    <div style="position:relative;width:40px;height:36px;display:flex;align-items:center;justify-content:center;">
+      <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);font-size:16px;">📦</div>
+      <div style="position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);font-size:24px;">🚗</div>
+    </div>
+  `,
+  className: 'driver-marker-icon',
+  iconSize: [40, 36],
+  iconAnchor: [20, 18],
+});
+
+export default function DeliveryMap({ startLocation, endLocation, orderId, order, height = '400px' }) {
   const startLatLng = useMemo(() => [startLocation[1], startLocation[0]], [startLocation]);
   const endLatLng = useMemo(() => [endLocation[1], endLocation[0]], [endLocation]);
-  const [driverCoordinates, setDriverCoordinates] = useState(startLatLng);
-  const [smoothCoordinates, setSmoothCoordinates] = useState([]);
   const [roadCoordinates, setRoadCoordinates] = useState([]);
-  const [animationIndex, setAnimationIndex] = useState(0);
-  const intervalRef = useRef(null);
+  const [currentTime, setCurrentTime] = useState(Date.now());
 
   const mapKey = `${orderId}-${startLocation[0]}-${startLocation[1]}-${endLocation[0]}-${endLocation[1]}`;
 
   const routePath = useMemo(() => roadCoordinates.map(([lon, lat]) => [lat, lon]), [roadCoordinates]);
+  const startedAt = useMemo(() => order?.startedAt?.toDate?.().getTime() ?? null, [order?.startedAt]);
+  const estimatedSeconds = order?.estimatedDurationSeconds ?? 150;
+  const elapsedSeconds = startedAt ? Math.max(0, (currentTime - startedAt) / 1000) : 0;
+  const progress = routePath.length > 0 ? Math.min(1, elapsedSeconds / estimatedSeconds) : 0;
+  const driverCoordinates = useMemo(() => {
+    if (!routePath.length) return startLatLng;
+    const index = Math.floor(progress * (routePath.length - 1));
+    return routePath[index];
+  }, [routePath, progress, startLatLng]);
 
-  function smoothCoordinator() {
-    const temp = [];
-    for (let i = 0; i < roadCoordinates.length - 1; i++) {
-      const [lonA, latA] = roadCoordinates[i];
-      const [lonB, latB] = roadCoordinates[i + 1];
-      const latStep = (latB - latA) / 10;
-      const lonStep = (lonB - lonA) / 10;
-
-      for (let j = 0; j <= 10; j++) {
-        temp.push({ lat: latA + latStep * j, lon: lonA + lonStep * j });
-      }
-    }
-    setSmoothCoordinates(temp);
-  }
+  const isComplete = routePath.length > 0 && progress >= 1;
+  const orderRef = orderId ? doc(db, 'orders', orderId) : null;
 
   async function fetchRoute() {
     try {
@@ -75,62 +103,22 @@ export default function DeliveryMap({ startLocation, endLocation, orderId, heigh
   }
 
   useEffect(() => {
-    if (roadCoordinates.length > 0) {
-      smoothCoordinator();
-      setDriverCoordinates(startLatLng);
-      setAnimationIndex(0);
-    }
-  }, [roadCoordinates, startLatLng]);
+    const timer = setInterval(() => setCurrentTime(Date.now()), 250);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
+    if (!orderRef || !routePath.length || !startedAt || !isComplete) return;
+    if (order?.status !== 'delivered') {
+      updateDoc(orderRef, {
+        status: 'delivered',
+        completedAt: serverTimestamp()
+      }).catch((error) => console.error('Unable to mark delivered:', error));
     }
-
-    if (smoothCoordinates.length > 0) {
-      setDriverCoordinates(startLatLng);
-      setAnimationIndex(0);
-      intervalRef.current = setInterval(() => {
-        setAnimationIndex((prevIndex) => {
-          const nextIndex = prevIndex + 1;
-          if (nextIndex >= smoothCoordinates.length) {
-            clearInterval(intervalRef.current);
-            intervalRef.current = null;
-            return prevIndex;
-          }
-          return nextIndex;
-        });
-      }, 100);
-    }
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    };
-  }, [smoothCoordinates]);
-
-  useEffect(() => {
-    if (animationIndex < smoothCoordinates.length) {
-      const nextCoords = smoothCoordinates[animationIndex];
-      if (nextCoords) {
-        setDriverCoordinates([nextCoords.lat, nextCoords.lon]);
-      }
-    }
-  }, [animationIndex, smoothCoordinates]);
+  }, [orderRef, routePath.length, startedAt, isComplete, order?.status]);
 
   useEffect(() => {
     setRoadCoordinates([]);
-    setSmoothCoordinates([]);
-    setAnimationIndex(0);
-
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-
     fetchRoute();
   }, [startLocation, endLocation]);
 
@@ -159,17 +147,17 @@ export default function DeliveryMap({ startLocation, endLocation, orderId, heigh
           <Polyline positions={routePath} pathOptions={{ color: '#059669', weight: 5, opacity: 0.75 }} />
         )}
 
-        <Marker position={startLatLng}>
+        <Marker position={startLatLng} icon={startIcon}>
           <Popup>
             <div className="text-sm font-semibold">Driver starting point</div>
             <div className="text-xs text-slate-600">Center of Deira</div>
           </Popup>
         </Marker>
 
-        <Marker position={endLatLng}>
+        <Marker position={endLatLng} icon={finishIcon}>
           <Popup>
-            <div className="text-sm font-semibold">Your current location</div>
-            <div className="text-xs text-slate-600">Delivery destination</div>
+            <div className="text-sm font-semibold">Delivery destination</div>
+            <div className="text-xs text-slate-600">Your current location</div>
           </Popup>
         </Marker>
 

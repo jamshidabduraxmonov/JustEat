@@ -71,6 +71,14 @@ const Orders = () => {
     return orders.find((order) => order.id === orderId) || null;
   }, [orderId, orders]);
 
+  const isDelivered = useMemo(() => {
+    if (!selectedOrder) return false;
+    if (selectedOrder.status === 'delivered') return true;
+    const startedAt = selectedOrder.startedAt?.toDate?.().getTime();
+    const duration = (selectedOrder.estimatedDurationSeconds ?? 150) * 1000;
+    return startedAt ? Date.now() - startedAt >= duration : false;
+  }, [selectedOrder]);
+
   if (!user) {
     return null;
   }
@@ -104,7 +112,7 @@ const Orders = () => {
                   <div>
                     <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Order details</p>
                     <h1 className="mt-2 text-3xl font-black text-white">#{selectedOrder.id.slice(0, 6)}</h1>
-                    <p className="mt-2 text-sm text-slate-300">Status: <span className="font-semibold text-emerald-300">{selectedOrder.status}</span></p>
+                    <p className="mt-2 text-sm text-slate-300">Status: <span className="font-semibold text-emerald-300">{isDelivered ? 'delivered' : selectedOrder.status}</span></p>
                   </div>
                   <button
                     onClick={() => navigate('/orders')}
@@ -120,17 +128,22 @@ const Orders = () => {
                   <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Live route</p>
                   <h2 className="mt-2 text-2xl font-black text-white">Driver path</h2>
                 </div>
+                {isDelivered && (
+                  <div className="border-b border-slate-700 bg-emerald-950/70 px-5 py-4 text-emerald-100">
+                    <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Delivery complete</p>
+                    <p className="mt-2 text-lg font-bold">This delivery finished successfully and is marked delivered.</p>
+                  </div>
+                )}
                 <div className="h-[60vh] w-full">
                   <DeliveryMap
                     startLocation={deiraCenter}
                     endLocation={
-                      liveUserLocation
-                        ? [liveUserLocation.lng, liveUserLocation.lat]
-                        : selectedOrder.deliveryLocation
+                      selectedOrder.deliveryLocation
                         ? [selectedOrder.deliveryLocation.lng, selectedOrder.deliveryLocation.lat]
                         : deiraCenter
                     }
                     orderId={selectedOrder.id}
+                    order={selectedOrder}
                     height="60vh"
                   />
                 </div>
