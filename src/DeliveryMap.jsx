@@ -78,6 +78,8 @@ export default function DeliveryMap({ startLocation, endLocation, orderId, order
   const orderRef = orderId ? doc(db, 'orders', orderId) : null;
 
   async function fetchRoute() {
+
+   
     try {
       const response = await fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
         method: 'POST',
@@ -101,6 +103,33 @@ export default function DeliveryMap({ startLocation, endLocation, orderId, order
       console.error('Error fetching route:', error);
     }
   }
+
+  async function backend(){
+      
+    const response = await fetch("http://localhost:3000/api/route", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"},
+          body: JSON.stringify({
+          coordinates: [
+            [1, 2],
+            [3, 4]
+          ]
+        })
+
+
+        },
+      )
+
+    const data = await response.json();
+    console.log(data);
+  }
+
+   backend();
+
+    
+
+
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(Date.now()), 250);
