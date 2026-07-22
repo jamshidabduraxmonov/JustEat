@@ -108,30 +108,30 @@ const Orders = () => {
           selectedOrder ? (
             <div className="space-y-5">
               <div className="rounded-[1.5rem] border border-slate-700 bg-slate-900/95 p-4 shadow-[0_25px_70px_rgba(0,0,0,0.65)]">
-                <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Order details</p>
-                    <h1 className="mt-2 text-3xl font-black text-white">#{selectedOrder.id.slice(0, 6)}</h1>
-                    <p className="mt-2 text-sm text-slate-300">Status: <span className="font-semibold text-emerald-300">{isDelivered ? 'delivered' : selectedOrder.status}</span></p>
+                    <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Your order</p>
+                    <h1 className="mt-2 text-3xl font-black text-white">Ready for pickup or delivery</h1>
+                    <p className="mt-2 text-sm leading-6 text-slate-300">
+                      Your food is being prepared and sent on its way. You can follow the live route below and see when it reaches you.
+                    </p>
                   </div>
-                  <button
-                    onClick={() => navigate('/orders')}
-                    className="inline-flex rounded-full border border-slate-600 bg-slate-800 px-4 py-2 text-sm font-semibold text-slate-100 transition hover:bg-slate-700"
-                  >
-                    Back to orders
-                  </button>
+                  <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-100">
+                    <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Current status</p>
+                    <p className="mt-1 font-black text-white">{isDelivered ? 'Delivered successfully' : selectedOrder.status === 'delivering' ? 'On the way' : selectedOrder.status}</p>
+                  </div>
                 </div>
               </div>
 
               <div className="mx-auto w-full max-w-[95vw] rounded-[1.75rem] border border-slate-700 bg-slate-900/95 shadow-[0_35px_90px_rgba(0,0,0,0.7)]">
                 <div className="px-5 py-4 border-b border-slate-700 bg-slate-800">
-                  <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Live route</p>
-                  <h2 className="mt-2 text-2xl font-black text-white">Driver path</h2>
+                  <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Live tracking</p>
+                  <h2 className="mt-2 text-2xl font-black text-white">Your delivery journey</h2>
                 </div>
                 {isDelivered && (
                   <div className="border-b border-slate-700 bg-emerald-950/70 px-5 py-4 text-emerald-100">
                     <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Delivery complete</p>
-                    <p className="mt-2 text-lg font-bold">This delivery finished successfully and is marked delivered.</p>
+                    <p className="mt-2 text-lg font-bold">Your order has arrived and the delivery is complete.</p>
                   </div>
                 )}
                 <div className="h-[60vh] w-full">
@@ -152,34 +152,34 @@ const Orders = () => {
               <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
                 <div className="space-y-4">
                   <div className="rounded-[1.5rem] border border-slate-700 bg-slate-900/95 p-4 shadow-lg">
-                    <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Order summary</p>
+                    <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">What you ordered</p>
                     <div className="mt-4 grid gap-3 sm:grid-cols-2">
                       <div className="rounded-2xl bg-slate-800 p-4">
                         <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Placed</p>
                         <p className="mt-2 text-lg font-bold text-white">{selectedOrder.createdAt?.toDate ? selectedOrder.createdAt.toDate().toLocaleString() : 'Just now'}</p>
                       </div>
                       <div className="rounded-2xl bg-slate-800 p-4">
-                        <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Total</p>
+                        <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Total paid</p>
                         <p className="mt-2 text-lg font-bold text-white">${selectedOrder.totalPrice}</p>
                       </div>
                       <div className="rounded-2xl bg-slate-800 p-4">
-                        <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Account</p>
+                        <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Your account</p>
                         <p className="mt-2 text-lg font-bold text-white">{selectedOrder.userEmail || 'Guest account'}</p>
                       </div>
                       <div className="rounded-2xl bg-slate-800 p-4">
                         <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Items</p>
-                        <p className="mt-2 text-lg font-bold text-white">{Object.keys(selectedOrder.items || {}).length}</p>
+                        <p className="mt-2 text-lg font-bold text-white">{Object.keys(selectedOrder.items || {}).length} items</p>
                       </div>
                     </div>
                   </div>
 
                   <div className="rounded-[1.5rem] border border-slate-700 bg-slate-900/95 p-4 shadow-lg">
-                    <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Items in order</p>
+                    <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Your items</p>
                     <div className="mt-4 space-y-3">
                       {Object.entries(selectedOrder.items || {}).map(([itemId, qty]) => (
                         <div key={itemId} className="flex items-center justify-between rounded-2xl bg-slate-800 p-3">
                           <span className="font-semibold text-slate-100">{itemId}</span>
-                          <span className="font-black text-emerald-300">x{qty}</span>
+                          <span className="font-black text-emerald-300">{qty}x</span>
                         </div>
                       ))}
                     </div>
@@ -188,26 +188,26 @@ const Orders = () => {
 
                 <div className="space-y-4">
                   <div className="rounded-[1.5rem] border border-slate-700 bg-slate-900/95 p-4 shadow-lg">
-                    <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Shipping details</p>
+                    <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Delivery details</p>
                     <div className="mt-4 space-y-4 text-slate-200">
                       <div>
-                        <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Restaurant</p>
+                        <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Pickup point</p>
                         <p className="mt-1 text-lg font-bold text-white">Deira center</p>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Destination</p>
-                        <p className="mt-1 text-lg font-bold text-white">{liveUserLocation ? `${liveUserLocation.lat.toFixed(5)}, ${liveUserLocation.lng.toFixed(5)}` : selectedOrder.deliveryLocation ? `${selectedOrder.deliveryLocation.lat.toFixed(5)}, ${selectedOrder.deliveryLocation.lng.toFixed(5)}` : 'Unknown'}</p>
+                        <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Delivery address</p>
+                        <p className="mt-1 text-lg font-bold text-white">{selectedOrder.deliveryLocation ? 'Your saved delivery location' : 'Location pending'}</p>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Status</p>
-                        <p className="mt-1 text-lg font-bold text-emerald-300">{selectedOrder.status}</p>
+                        <p className="text-xs uppercase tracking-[0.35em] text-slate-400">What to expect</p>
+                        <p className="mt-1 text-lg font-bold text-emerald-300">{isDelivered ? 'Arrived and completed' : 'Your rider is on the way'}</p>
                       </div>
                     </div>
                   </div>
 
                   <div className="rounded-[1.5rem] border border-slate-700 bg-slate-900/95 p-4 shadow-lg">
-                    <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Delivery notes</p>
-                    <p className="mt-3 leading-6 text-slate-300">This layout keeps the map huge and the most important details bold, with minimal inner padding so it feels open and clear.</p>
+                    <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Helpful info</p>
+                    <p className="mt-3 leading-6 text-slate-300">Track your delivery live on the map above. Once it reaches your location, the order will be marked as completed automatically.</p>
                   </div>
                 </div>
               </div>
