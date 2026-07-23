@@ -81,11 +81,10 @@ export default function DeliveryMap({ startLocation, endLocation, orderId, order
 
    
     try {
-      const response = await fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
+      const response = await fetch('http://localhost:3000/api/route', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'Authorization': 'eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjU1ZDhlNWQ1Yzg3YTRkNTQ5MWZmNzM3MjBmNTc1OGEyIiwiaCI6Im11cm11cjY0In0='
+        header: {
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           coordinates: [
@@ -96,6 +95,7 @@ export default function DeliveryMap({ startLocation, endLocation, orderId, order
       });
 
       const result = await response.json();
+      console.log("result: ", result)
       if (result.features?.[0]?.geometry?.coordinates) {
         setRoadCoordinates(result.features[0].geometry.coordinates);
       }
@@ -104,28 +104,28 @@ export default function DeliveryMap({ startLocation, endLocation, orderId, order
     }
   }
 
-  async function backend(){
+  // async function backend(){
       
-    const response = await fetch("http://localhost:3000/api/route", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"},
-          body: JSON.stringify({
-          coordinates: [
-            [1, 2],
-            [3, 4]
-          ]
-        })
+  //   const response = await fetch("http://localhost:3000/api/route", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json"},
+  //         body: JSON.stringify({
+  //         coordinates: [
+  //           [1, 2],
+  //           [3, 4]
+  //         ]
+  //       })
 
 
-        },
-      )
+  //       },
+  //     )
 
-    const data = await response.json();
-    console.log(data);
-  }
+  //   const data = await response.json();
+  //   console.log(data);
+  // }
 
-   backend();
+  //  backend();
 
     
 
