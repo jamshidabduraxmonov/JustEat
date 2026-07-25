@@ -147,8 +147,13 @@ export default function DeliveryMap({ startLocation, endLocation, orderId, order
   }, [orderRef, routePath.length, startedAt, isComplete, order?.status]);
 
   useEffect(() => {
-    setRoadCoordinates([]);
-    await fetchRoute();
+    async function loadCoordinates(){
+      setRoadCoordinates([]);
+      await fetchRoute();
+    };
+
+    loadCoordinates();
+   
   }, [startLocation, endLocation]);
 
   const mapCenter = [
