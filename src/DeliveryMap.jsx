@@ -148,7 +148,7 @@ export default function DeliveryMap({ startLocation, endLocation, orderId, order
 
   useEffect(() => {
     setRoadCoordinates([]);
-    fetchRoute();
+    await fetchRoute();
   }, [startLocation, endLocation]);
 
   const mapCenter = [
