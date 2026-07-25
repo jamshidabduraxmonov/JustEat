@@ -18,9 +18,9 @@ app.get("/", (req, res) => {
 
 
 app.post("/api/route", async(req, res)=> {
-    console.log(req.body);
+    console.log("This is Request body: ", req.body);
 
-    const response = await fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson',{
+    const response = await fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -28,12 +28,11 @@ app.post("/api/route", async(req, res)=> {
         }, 
         body: JSON.stringify(req.body)
         
-    }
-        
-    );
-
+    });
+    console.log("Response status: ", response.status);
     const data = await response.json();
     console.log('openroute data: ', data);
+
     res.json(data);
 });
 
