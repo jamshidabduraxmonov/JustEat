@@ -10,7 +10,7 @@ app.use(cors());
 const apiKey = process.env.ORS_API_KEY;
 
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
     res.send("Hello from backend!");
@@ -39,6 +39,6 @@ app.post("/api/route", async(req, res)=> {
 
 
 
-app.listen(PORT, ()=> {
+app.listen(PORT, '0.0.0.0', ()=> {
     console.log(`Server running on http://localhost:${PORT}`);
 });

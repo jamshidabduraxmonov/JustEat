@@ -81,7 +81,7 @@ export default function DeliveryMap({ startLocation, endLocation, orderId, order
 
    
     try {
-      const response = await fetch('http://localhost:3000/api/route', {
+      const response = await fetch('https://justeat-xla7.onrender.com/api/route', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
