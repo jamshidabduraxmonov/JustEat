@@ -79,6 +79,19 @@ const Orders = () => {
     return startedAt ? Date.now() - startedAt >= duration : false;
   }, [selectedOrder]);
 
+
+  const endLocation = useMemo(()=> {
+    if(!selectedOrder?.deliveryLocation){
+      return deiraCenter;
+    }
+
+    return [
+      selectedOrder.deliveryLocation.lng,
+      selectedOrder.deliveryLocation.lat
+    ];
+  }, [selectedOrder]);
+
+
   if (!user) {
     return null;
   }
@@ -137,11 +150,7 @@ const Orders = () => {
                 <div className="h-[60vh] w-full">
                   <DeliveryMap
                     startLocation={deiraCenter}
-                    endLocation={
-                      selectedOrder.deliveryLocation
-                        ? [selectedOrder.deliveryLocation.lng, selectedOrder.deliveryLocation.lat]
-                        : deiraCenter
-                    }
+                    endLocation={endLocation}
                     orderId={selectedOrder.id}
                     order={selectedOrder}
                     height="60vh"

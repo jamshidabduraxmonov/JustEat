@@ -1,6 +1,6 @@
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, CircleMarker, Popup, Polyline, useMap } from 'react-leaflet';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from './firebase.js';
 
@@ -11,6 +11,7 @@ function FitRouteBounds({ positions }) {
     if (!positions.length) return;
     const bounds = L.latLngBounds(positions);
     map.fitBounds(bounds, { padding: [40, 40] });
+    console.log("Map rendered!")
   }, [map, positions]);
 
   return null;
@@ -146,13 +147,31 @@ export default function DeliveryMap({ startLocation, endLocation, orderId, order
     }
   }, [orderRef, routePath.length, startedAt, isComplete, order?.status]);
 
+
+  const previousStart = useRef();
+
+  useEffect(()=> {
+    console.log("Same start reference?",
+      previousStart.current === startLocation
+    );
+
+    previousStart.current = startLocation;
+  }, [startLocation]);
+
+  const routeLoaded = useRef(false);
+
   useEffect(() => {
+
+    if(routeLoaded.current) return;
+
     async function loadCoordinates(){
       setRoadCoordinates([]);
       await fetchRoute();
+      routeLoaded.current = true;
     };
 
     loadCoordinates();
+    console.log("Coordinates Reloaded again");
    
   }, [startLocation, endLocation]);
 
