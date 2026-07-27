@@ -297,14 +297,14 @@ useEffect( () => {
   
 
  return (
-    <div className="app-container pb-40"> 
+    <div className="app-container"> 
       <Routes>
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/orders' element={<Orders />} />
         <Route path='/orders/:orderId' element={<Orders />} />
         <Route path='/' element={
-          <>
+          <div className="pb-40">
              <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
                   <h1 className="text-xl font-black tracking-tighter text-emerald-600">Quick Order</h1>
@@ -477,7 +477,7 @@ useEffect( () => {
     </div>
   </div>
 )}
-          </>
+          </div>
         }/>
 
         <Route path="/admin" element={<StaffDashboard />} />
