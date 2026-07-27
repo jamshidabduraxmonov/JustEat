@@ -103,7 +103,6 @@ const Orders = () => {
           <div>
             <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Order history</p>
             <h1 className="mt-2 text-4xl font-black text-white">Your orders</h1>
-            <p className="mt-2 max-w-2xl text-sm text-slate-300">Click any order for a dedicated page with a large delivery map and bold, readable details.</p>
           </div>
           <button
             onClick={() => navigate('/')}
@@ -214,10 +213,6 @@ const Orders = () => {
                     </div>
                   </div>
 
-                  <div className="rounded-[1.5rem] border border-slate-700 bg-slate-900/95 p-4 shadow-lg">
-                    <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Helpful info</p>
-                    <p className="mt-3 leading-6 text-slate-300">Track your delivery live on the map above. Once it reaches your location, the order will be marked as completed automatically.</p>
-                  </div>
                 </div>
               </div>
             </div>
