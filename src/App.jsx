@@ -287,7 +287,7 @@ const handleLogout = async () => {
 }, [total]);
 
 useEffect( () => {
-  console.log('The Product code: ', cartContents)
+  console.log('cartContents: ', cartContents)
 }, [cartContents]);
 
 useEffect( () => {
@@ -467,7 +467,7 @@ useEffect( () => {
           </div>
 
           <button
-            onClick={() => { setIsPopupOpen(false); navigate(`/orders/${orderId}`); }}
+            onClick={() => { setIsPopupOpen(false); navigate(`/orders/${orderId}`); setTotal(0); setCartContents({});}}
             className="w-full bg-emerald-500 text-white font-bold py-3 rounded-2xl hover:bg-emerald-600 transition-all active:scale-95"
           >
             Track Delivery

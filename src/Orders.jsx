@@ -105,7 +105,7 @@ const Orders = () => {
             <h1 className="mt-2 text-4xl font-black text-white">Your orders</h1>
           </div>
           <button
-            onClick={() => navigate('/')}
+            onClick={() => {navigate('/');}}
             className="inline-flex rounded-full border border-emerald-400 bg-emerald-500 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-emerald-400"
           >
             Back to shop
