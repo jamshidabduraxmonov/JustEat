@@ -451,24 +451,11 @@ useEffect( () => {
           
           <h3 className="text-2xl font-black text-slate-800 mb-2">Order Confirmed</h3>
           
-          <p className="text-slate-500 mb-6">Your order is on the way! Show these codes to the cashier:</p>
+          <p className="text-slate-500 mb-6">Your order is on the way! </p>
           
-          <div className="bg-slate-900 text-emerald-400 p-6 rounded-2xl font-mono text-center space-y-2 mb-6">
-            {codeKeys.map((codeKey) => {
-              const spcProduct = sandwiches.find(item => item.id === codeKey);
-              const code = spcProduct.code;
-
-              return (
-                <p key={spcProduct.id} className="text-3xl tracking-widest uppercase">
-                  {code} ({cartContents[spcProduct.id]})
-                </p>
-              )
-            })}
-          </div>
-
           <button
             onClick={() => { setIsPopupOpen(false); navigate(`/orders/${orderId}`); setTotal(0); setCartContents({});}}
-            className="w-full bg-emerald-500 text-white font-bold py-3 rounded-2xl hover:bg-emerald-600 transition-all active:scale-95"
+            className="w-full animate-bounce shadow-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-2xl transition-all active:scale-95"
           >
             Track Delivery
           </button>
