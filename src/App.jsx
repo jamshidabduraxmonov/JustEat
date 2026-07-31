@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import { db } from './firebase.js';
 import {onSnapshot, collection, addDoc, serverTimestamp} from 'firebase/firestore';
 import StaffDashboard from './StaffDashboard.jsx';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import {Menu} from './Menu.jsx';
 import { useAuth } from './AuthProvider.jsx';
 import Login from './Login.jsx';
@@ -308,6 +308,9 @@ useEffect( () => {
         <Route path='/orders/:orderId' element={<Orders />} />
         <Route path='/welcome' element={<Welcome/>} />
 
+        {
+          console.log("USER: ", user)
+        }
          
         <Route path='/' element={
           user ? (
@@ -474,7 +477,7 @@ useEffect( () => {
           </div>
           
         ) : (
-          navigate('/welcome')
+          <Navigate to="/welcome" replace />
         )
           
         }/>
