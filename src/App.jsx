@@ -342,12 +342,6 @@ useEffect( () => {
                         >
                           Login
                         </button>
-                        <button
-                          className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-slate-200 active:scale-95 transition-all"
-                          onClick={() => navigate('/register')}
-                        >
-                          Register
-                        </button>
                       </>
                     ) : (
                       <>
