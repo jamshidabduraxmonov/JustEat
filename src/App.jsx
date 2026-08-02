@@ -6,7 +6,6 @@ import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import {Menu} from './Menu.jsx';
 import { useAuth } from './AuthProvider.jsx';
 import Login from './Login.jsx';
-import Register from './Register.jsx';
 import Orders from './Orders.jsx';
 import Welcome from './Welcome.jsx';
 
@@ -121,35 +120,58 @@ export default function MainMenu() {
   const [ isBusy, setIsBusy ] = useState(false); // State indicated if app is transferring data
 
   const [ orderId, setOrderId] = useState("");
+
+  const [ locationPermission, setLocationPermission] = useState("location");
   
   const [ userDeliveryLocation, setUserDeliveryLocation ] = useState({
     lat: 25.265,
     lng: 55.309
   });
 
-  useEffect(() => {
-    if (!navigator.geolocation) {
-      console.warn('Geolocation is not available in this browser.');
+    useEffect(() => {
+      requestLocation();
+    }, []);
+
+
+  // Request Location
+  
+  function requestLocation(){
+    if(!navigator.geolocation){
+      console.warn("Geolocation is not available in this crappy browser!");
+      setLocationPermission("unsupported");
       return;
     }
 
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      (position)=> {
         setUserDeliveryLocation({
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
+
+        setLocationPermission("granted");
       },
+
       (error) => {
-        console.warn('Unable to obtain current location:', error.message);
+        console.warn("Unable to obtain current location: ", error.message);
+
+        setLocationPermission("denied");
       },
+
       {
         enableHighAccuracy: true,
         timeout: 10000,
         maximumAge: 10000,
       }
     );
-  }, []);
+  }
+
+
+
+
+
+
+
 
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -303,7 +325,6 @@ useEffect( () => {
     <div className="app-container"> 
       <Routes>
         <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
         <Route path='/orders' element={<Orders />} />
         <Route path='/orders/:orderId' element={<Orders />} />
         <Route path='/welcome' element={<Welcome/>} />
