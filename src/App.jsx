@@ -8,6 +8,7 @@ import { useAuth } from './AuthProvider.jsx';
 import Login from './Login.jsx';
 import Orders from './Orders.jsx';
 import Welcome from './Welcome.jsx';
+import LocationReq from './LocationReq.jsx';
 
 
 export function ProductCard({ name, onAdd, price, onRemove, image, code, id, clearProduct, ingredients }) {
@@ -328,14 +329,16 @@ useEffect( () => {
         <Route path='/orders' element={<Orders />} />
         <Route path='/orders/:orderId' element={<Orders />} />
         <Route path='/welcome' element={<Welcome/>} />
+        <Route path='/location' element={<LocationReq/>}/>
 
         {
           console.log("USER: ", user)
         }
          
         <Route path='/' element={
-          user ? (
-            <div className="pb-40">
+          user ? ( 
+              locationPermission === 'granted' ? (
+                <div className="pb-40">
              <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
                   <h1 className="text-xl font-black tracking-tighter text-emerald-600">Quick Order</h1>
@@ -411,86 +414,93 @@ useEffect( () => {
 
           
 
-    {isPopupOpen && (
-      <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-4">
-        
-        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" />
+          {isPopupOpen && (
+            <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-4">
+              
+              <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm" />
 
-        <div className="relative w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl p-6">
-          {isConfirmed === false ? (
-            <>
-              
-              <button 
-                className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-xl p-2"
-                onClick={() => setIsPopupOpen(false)}
-              >
-                x
-              </button>
+              <div className="relative w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl p-6">
+                {isConfirmed === false ? (
+                  <>
+                    
+                    <button 
+                      className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-xl p-2"
+                      onClick={() => setIsPopupOpen(false)}
+                    >
+                      x
+                    </button>
 
-            
-              <h3 className="text-2xl font-black text-slate-800 mb-1">Your Order</h3>
-              
-              
-              <p className="text-slate-500 text-sm mb-6">Review your items before confirming</p>
-              
-            
-              <div className="space-y-3 mb-8">
-                {codeKeys.map((key) => {
-                  const spcProduct = sandwiches.find((item) => item.id === key);
-                  const name = spcProduct.name;
-                  const price = spcProduct.price;
-                  const qty = cartContents[spcProduct.id];
+                  
+                    <h3 className="text-2xl font-black text-slate-800 mb-1">Your Order</h3>
+                    
+                    
+                    <p className="text-slate-500 text-sm mb-6">Review your items before confirming</p>
+                    
+                  
+                    <div className="space-y-3 mb-8">
+                      {codeKeys.map((key) => {
+                        const spcProduct = sandwiches.find((item) => item.id === key);
+                        const name = spcProduct.name;
+                        const price = spcProduct.price;
+                        const qty = cartContents[spcProduct.id];
 
-                  return (
-                    <p key={name} className="flex justify-between items-center text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-100">
-                      <span className="font-medium">{name} ({qty})</span>
-                      <span className="font-bold text-emerald-600">${qty * price}</span>
-                    </p>
-                  )
-                })}
+                        return (
+                          <p key={name} className="flex justify-between items-center text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                            <span className="font-medium">{name} ({qty})</span>
+                            <span className="font-bold text-emerald-600">${qty * price}</span>
+                          </p>
+                        )
+                      })}
+                    </div>
+
+                    
+                    <h3 className="text-xl font-black text-slate-900 border-t pt-4 mb-6 flex justify-between">
+                      <span>Total:</span>
+                      <span>${total}</span>
+                    </h3>
+
+                    
+                    <button 
+                      className="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-emerald-100 active:scale-95 transition-all disabled:opacity-50"
+                      onClick={() => { handleOrder() }} 
+                      disabled={isBusy}
+                    >
+                      {isBusy ? "Sending..." : "Confirm"}
+                    </button>
+                  </>
+                ) : ( 
+                  <>
+                    <button 
+                      className="absolute top-4 right-4 text-slate-400 font-bold text-xl"
+                      onClick={() => {setIsPopupOpen(false); navigate(`/orders/${orderId}`); window.location.reload()}}
+                    >
+                      x
+                    </button>
+                    
+                    <h3 className="text-2xl font-black text-slate-800 mb-2">Order Confirmed</h3>
+                    
+                    <p className="text-slate-500 mb-6">Your order is on the way! </p>
+                    
+                    <button
+                      onClick={() => { setIsPopupOpen(false); navigate(`/orders/${orderId}`); setTotal(0); setCartContents({});}}
+                      className="w-full animate-bounce shadow-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-2xl transition-all active:scale-95"
+                    >
+                      Track Delivery
+                    </button>
+                  </>
+                )}
               </div>
-
-              
-              <h3 className="text-xl font-black text-slate-900 border-t pt-4 mb-6 flex justify-between">
-                <span>Total:</span>
-                <span>${total}</span>
-              </h3>
-
-              
-              <button 
-                className="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-emerald-100 active:scale-95 transition-all disabled:opacity-50"
-                onClick={() => { handleOrder() }} 
-                disabled={isBusy}
-              >
-                {isBusy ? "Sending..." : "Confirm"}
-              </button>
-            </>
-          ) : ( 
-            <>
-              <button 
-                className="absolute top-4 right-4 text-slate-400 font-bold text-xl"
-                onClick={() => {setIsPopupOpen(false); navigate(`/orders/${orderId}`); window.location.reload()}}
-              >
-                x
-              </button>
-              
-              <h3 className="text-2xl font-black text-slate-800 mb-2">Order Confirmed</h3>
-              
-              <p className="text-slate-500 mb-6">Your order is on the way! </p>
-              
-              <button
-                onClick={() => { setIsPopupOpen(false); navigate(`/orders/${orderId}`); setTotal(0); setCartContents({});}}
-                className="w-full animate-bounce shadow-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-2xl transition-all active:scale-95"
-              >
-                Track Delivery
-              </button>
-            </>
+            </div>
           )}
-        </div>
       </div>
-    )}
-          </div>
-          
+              
+            ) : (
+              <LocationReq 
+                  requestLocation={requestLocation}
+                  locationPermission={locationPermission}
+              />
+              )
+                
         ) : (
           <Navigate to="/welcome" replace />
         )
