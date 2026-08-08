@@ -105,30 +105,6 @@ export default function DeliveryMap({ startLocation, endLocation, orderId, order
     }
   }
 
-  // async function backend(){
-      
-  //   const response = await fetch("http://localhost:3000/api/route", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json"},
-  //         body: JSON.stringify({
-  //         coordinates: [
-  //           [1, 2],
-  //           [3, 4]
-  //         ]
-  //       })
-
-
-  //       },
-  //     )
-
-  //   const data = await response.json();
-  //   console.log(data);
-  // }
-
-  //  backend();
-
-    
 
 
 

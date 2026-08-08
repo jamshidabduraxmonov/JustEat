@@ -120,32 +120,20 @@ const Orders = () => {
           selectedOrder ? (
             <div className="space-y-5">
               <div className="rounded-[1.5rem] border border-slate-700 bg-slate-900/95 p-4 shadow-[0_25px_70px_rgba(0,0,0,0.65)]">
-                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Your order</p>
-                    <h1 className="mt-2 text-3xl font-black text-white">Ready for pickup or delivery</h1>
-                    <p className="mt-2 text-sm leading-6 text-slate-300">
-                      Your food is being prepared and sent on its way. You can follow the live route below and see when it reaches you.
-                    </p>
-                  </div>
+                
                   <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-100">
                     <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Current status</p>
                     <p className="mt-1 font-black text-white">{isDelivered ? 'Delivered successfully' : selectedOrder.status === 'delivering' ? 'On the way' : selectedOrder.status}</p>
                   </div>
-                </div>
+                
               </div>
 
               <div className="mx-auto w-full max-w-[95vw] rounded-[1.75rem] border border-slate-700 bg-slate-900/95 shadow-[0_35px_90px_rgba(0,0,0,0.7)]">
                 <div className="px-5 py-4 border-b border-slate-700 bg-slate-800">
                   <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Live tracking</p>
-                  <h2 className="mt-2 text-2xl font-black text-white">Your delivery journey</h2>
+                  
                 </div>
-                {isDelivered && (
-                  <div className="border-b border-slate-700 bg-emerald-950/70 px-5 py-4 text-emerald-100">
-                    <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Delivery complete</p>
-                    <p className="mt-2 text-lg font-bold">Your order has arrived and the delivery is complete.</p>
-                  </div>
-                )}
+          
                 <div className="h-[60vh] w-full">
                   <DeliveryMap
                     startLocation={deiraCenter}
@@ -170,10 +158,7 @@ const Orders = () => {
                         <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Total paid</p>
                         <p className="mt-2 text-lg font-bold text-white">${selectedOrder.totalPrice}</p>
                       </div>
-                      <div className="rounded-2xl bg-slate-800 p-4">
-                        <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Your account</p>
-                        <p className="mt-2 text-lg font-bold text-white">{selectedOrder.userEmail || 'Guest account'}</p>
-                      </div>
+                     
                       <div className="rounded-2xl bg-slate-800 p-4">
                         <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Items</p>
                         <p className="mt-2 text-lg font-bold text-white">{Object.keys(selectedOrder.items || {}).length} items</p>
@@ -192,27 +177,6 @@ const Orders = () => {
                       ))}
                     </div>
                   </div>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="rounded-[1.5rem] border border-slate-700 bg-slate-900/95 p-4 shadow-lg">
-                    <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">Delivery details</p>
-                    <div className="mt-4 space-y-4 text-slate-200">
-                      <div>
-                        <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Pickup point</p>
-                        <p className="mt-1 text-lg font-bold text-white">Deira center</p>
-                      </div>
-                      <div>
-                        <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Delivery address</p>
-                        <p className="mt-1 text-lg font-bold text-white">{selectedOrder.deliveryLocation ? 'Your saved delivery location' : 'Location pending'}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs uppercase tracking-[0.35em] text-slate-400">What to expect</p>
-                        <p className="mt-1 text-lg font-bold text-emerald-300">{isDelivered ? 'Arrived and completed' : 'Your rider is on the way'}</p>
-                      </div>
-                    </div>
-                  </div>
-
                 </div>
               </div>
             </div>
