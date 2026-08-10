@@ -10,13 +10,28 @@ const Orders = () => {
   const navigate = useNavigate();
   const { orderId } = useParams();
   const [orders, setOrders] = useState([]);
+  const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [liveUserLocation, setLiveUserLocation] = useState(null);
   const watchIdRef = useRef(null);
   const deiraCenter = [55.309, 25.265];
 
+
+
+
   useEffect(() => {
     if (!user) return;
+
+    const productsCollection = collection(db, 'products');
+
+    const unsubscribeProducts = onSnapshot(productsCollection, snapshot=> {
+      const tempOrders = [];
+      snapshot.forEach((doc)=> {
+        tempOrders.push({id: doc.id, ...doc.data()});
+      });
+      setProducts(tempOrders);
+    })
+
 
     const ordersCollection = collection(db, 'orders');
     const ordersQuery = query(
@@ -34,7 +49,10 @@ const Orders = () => {
       setIsLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      unsubscribeProducts();
+    }
   }, [user]);
 
   useEffect(() => {
@@ -66,6 +84,8 @@ const Orders = () => {
       }
     };
   }, []);
+
+  console.log("Products: ", products);
 
   const selectedOrder = useMemo(() => {
     return orders.find((order) => order.id === orderId) || null;
@@ -171,7 +191,7 @@ const Orders = () => {
                     <div className="mt-4 space-y-3">
                       {Object.entries(selectedOrder.items || {}).map(([itemId, qty]) => (
                         <div key={itemId} className="flex items-center justify-between rounded-2xl bg-slate-800 p-3">
-                          <span className="font-semibold text-slate-100">{itemId}</span>
+                          <span className="font-semibold text-slate-100">{products.find(product => product.id === itemId)?.name}</span>
                           <span className="font-black text-emerald-300">{qty}x</span>
                         </div>
                       ))}
