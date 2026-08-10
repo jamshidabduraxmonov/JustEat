@@ -112,6 +112,8 @@ export default function MainMenu() {
   
   const [ sandwiches, setSandwiches ] = useState([]);
 
+  const [ filteredSandwiches, setFilteredSandwiches] = useState([]);
+
   const [ cartContents, setCartContents ] = useState({});
 
   const [ isPopupOpen, setIsPopupOpen ] = useState(false); 
@@ -439,7 +441,7 @@ useEffect( () => {
                   
                     <div className="space-y-3 mb-8">
                       {codeKeys.map((key) => {
-                        const spcProduct = sandwiches.find((item) => item.id === key);
+                        const spcProduct = allProducts.find((item) => item.id === key);
                         const name = spcProduct.name;
                         const price = spcProduct.price;
                         const qty = cartContents[spcProduct.id];
