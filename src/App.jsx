@@ -346,15 +346,15 @@ useEffect( () => {
                   <h1 className="text-xl font-black tracking-tighter text-emerald-600">Quick Order</h1>
                   
                   <div className="flex flex-wrap justify-center  gap-2">
-                      <button className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all" onClick={() => setActiveCategory('sandwiches')}>
+                      <button className={`px-4 py-2 rounded-full text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all ${activeCategory === "sandwiches" ? ('bg-emerald-500 text-white') : ('bg-slate-100 text-slate-600') }`} onClick={() => setActiveCategory('sandwiches')}>
                         Sandwiches/Wraps
                       </button>
 
-                      <button className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all" onClick={() => setActiveCategory('bakery')}>
+                      <button className={`px-4 py-2 rounded-full  text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all ${activeCategory === "bakery" ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-600'}`} onClick={() => setActiveCategory('bakery')}>
                         Croissant/Rolls
                       </button>
                     
-                      <button className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all" onClick={() => setActiveCategory('starbucks')}>
+                      <button className={`px-4 py-2 rounded-full text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all ${activeCategory === 'starbucks' ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-600'}`} onClick={() => setActiveCategory('starbucks')}>
                         Starbucks
                       </button>
                   </div>
