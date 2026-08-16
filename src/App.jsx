@@ -135,6 +135,9 @@ export default function MainMenu() {
       requestLocation();
     }, []);
 
+    const [ isMobile, setIsMobile] = useState(false);
+    const [hamburgOpen, setHamburgOpen] = useState(false);
+
 
   // Request Location
   
@@ -322,6 +325,21 @@ useEffect( () => {
   console.log("Order Button: ", isPopupOpen);
 }, [isPopupOpen]);
     
+
+
+useEffect( ()=> {
+
+  const checkScreen = () => {
+    setIsMobile(window.innerWidth < 768);
+  };
+
+  checkScreen();
+  window.addEventListener('resize', checkScreen);
+
+  return ()=> window.removeEventListener('resize', checkScreen);
+
+
+}, []); 
   
 
  return (
@@ -363,7 +381,7 @@ useEffect( () => {
                   </div>
 
                   <div className="flex flex-wrap justify-center gap-2">
-                    
+                    {!isMobile ? (
                       <>
                         <button
                           className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-slate-200 active:scale-95 transition-all"
@@ -378,6 +396,33 @@ useEffect( () => {
                           Sign out
                         </button>
                       </>
+                    ) : (
+                      <>
+                        <div onClick={()=> {setHamburgOpen(!hamburgOpen)}} className=" w-[2rem] h-[2rem] flex flex-col flex-nowrap justify-around z-10">
+                          <div className="w-[2rem] h-[0.25rem] rounded-[10px] bg-black transform-[1px] transition-all duration-[3000ms] ease-linear "/>
+                          <div className="w-[2rem] h-[0.25rem] rounded-[10px] bg-black transform-[1px] transition-all duration-[3000ms] ease-linear"/>
+                          <div className="w-[2rem] h-[0.25rem] rounded-[10px] bg-black transform-[1px] transition-all duration-[3000ms] ease-linear"/>
+                        </div>
+
+                        <div className={`${hamburgOpen ? 'inline' : 'hidden'} bg-blue-400`}>
+                           <button
+                              className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-slate-200 active:scale-95 transition-all"
+                              onClick={() => navigate('/orders')}
+                            >
+                              My Orders
+                            </button>
+                            <button
+                              className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-slate-200 active:scale-95 transition-all"
+                              onClick={handleLogout}
+                            >
+                              Sign out
+                            </button>
+                        </div>
+                      </>
+                    )
+
+                    }
+                      
                     
                   </div>
 
