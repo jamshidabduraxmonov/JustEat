@@ -16,8 +16,8 @@ export default function LocationReq({requestLocation, locationPermission}){
         <div className="absolute -top-24 -left-24 h-80 w-80 rounded-full bg-white/10 blur-3xl"></div>
         <div className="absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-black/10 blur-3xl"></div>
 
-        <p className="uppercase tracking-[0.35em] text-emerald-100 text-sm font-bold">
-          JustEat
+        <p className="tracking-[0.35em] text-emerald-100 text-sm font-bold">
+          QuickOrdr
         </p>
 
         <h1 className="mt-4 text-5xl font-black leading-tight">

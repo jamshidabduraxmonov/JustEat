@@ -38,8 +38,8 @@ export default function Welcome(){
         <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-white/10 blur-3xl"></div>
         <div className="absolute -bottom-20 -right-20 h-72 w-72 rounded-full bg-black/10 blur-3xl"></div>
 
-        <p className="uppercase tracking-[0.35em] text-emerald-100 text-sm font-bold">
-          JustEat
+        <p className="tracking-[0.35em] text-emerald-100 text-sm font-bold">
+          QuickOrdr
         </p>
 
         <h1 className="mt-4 text-5xl font-black leading-tight">
@@ -84,7 +84,7 @@ export default function Welcome(){
             </h2>
 
             <p className="mt-3 text-slate-500">
-              Continue with Google to access JustEat.
+              Continue with Google to access QuickOrdr.
             </p>
 
           </div>
