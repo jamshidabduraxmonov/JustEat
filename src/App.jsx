@@ -363,16 +363,7 @@ useEffect( () => {
                   </div>
 
                   <div className="flex flex-wrap justify-center gap-2">
-                    {!user ? (
-                      <>
-                        <button
-                          className="px-4 py-2 rounded-full bg-emerald-500 text-white text-sm font-bold hover:bg-emerald-600 active:scale-95 transition-all"
-                          onClick={() => navigate('/login')}
-                        >
-                          Login
-                        </button>
-                      </>
-                    ) : (
+                    
                       <>
                         <button
                           className="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-bold hover:bg-slate-200 active:scale-95 transition-all"
@@ -387,7 +378,7 @@ useEffect( () => {
                           Sign out
                         </button>
                       </>
-                    )}
+                    
                   </div>
 
                   
