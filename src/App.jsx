@@ -360,20 +360,20 @@ useEffect( ()=> {
               locationPermission === 'granted' ? (
                 <div className="pb-40">
              <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b">
-                <div className="max-w-7xl mx-auto px-6 flex flex-row sm:flex-row justify-between items-center gap-4">
+                <div className="max-w-8xl mx-auto px-6 flex flex-row sm:flex-row justify-between items-center gap-4">
                   
                   
-                  <div className="flex flex-wrap justify-center md:hidden m-0 ">
+                  <div className="flex flex-wrap justify-center md:hidden  m-0">
                     <a href="/" className="shrink-0" >
                       <img className="h-18 w-auto  object-contain"    src="./src/assets/logo.png" alt="Company Logo" />
                     </a>
-                    {/* <h1 className="text-md font-black tracking-tighter text-emerald-600">QuickOrdr</h1> */}
                   </div>
 
-                  <div className="hidden md:block flex flex-wrap justify-center m-0 ">
+                  <div className="hidden md:flex mx-6">
                     <a href="/" className="shrink-0" >
-                      <img className="h-24 w-auto  object-contain"    src="./src/assets/logo.png" alt="Company Logo" />
+                      <img className="h-12 w-auto  object-contain image-render-crisp-edges"    src="./src/assets/logo2.png" alt="Company Logo" />
                     </a>
+                    <h1 className="hidden lg:block text-xl font-black my-auto tracking-tighter text-emerald-600 leading-none">QuickOrdr</h1>
                     
                   </div>
 
@@ -381,16 +381,16 @@ useEffect( ()=> {
 
 
                  
-                  <div className="flex flex-wrap justify-center py-2  gap-2">
-                      <button className={`px-2 py-1 border border-1 rounded-full text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all ${activeCategory === "sandwiches" ? ('bg-emerald-500 text-white') : ('bg-slate-100 text-slate-600') }`} onClick={() => setActiveCategory('sandwiches')}>
+                  <div className="flex flex-wrap justify-center py-2  gap-2 lg:gap-6">
+                      <button className={`px-2 py-1 lg:px-4 lg:py-2 border border-1 rounded-full text-slate-600 text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all ${activeCategory === "sandwiches" ? ('bg-emerald-500 text-white') : ('bg-slate-100 text-slate-600') }`} onClick={() => setActiveCategory('sandwiches')}>
                         Sandwiches/Wraps
                       </button>
 
-                      <button className={`px-2 py-1 border border-1 rounded-full  text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all ${activeCategory === "bakery" ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-600'}`} onClick={() => setActiveCategory('bakery')}>
+                      <button className={`px-2 py-1 lg:px-4 lg:py-2 border border-1 rounded-full  text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all ${activeCategory === "bakery" ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-600'}`} onClick={() => setActiveCategory('bakery')}>
                         Croissant/Rolls
                       </button>
                     
-                      <button className={`px-2 py-1 border border-1 rounded-full text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all ${activeCategory === 'starbucks' ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-600'}`} onClick={() => setActiveCategory('starbucks')}>
+                      <button className={`px-2 py-1 lg:px-4 lg:py-2 border border-1 rounded-full text-sm font-bold hover:bg-emerald-50 hover:text-emerald-600 active:scale-95 active:bg-emerald-500 active:text-white transition-all ${activeCategory === 'starbucks' ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-600'}`} onClick={() => setActiveCategory('starbucks')}>
                         Starbucks
                       </button>
                   </div>
